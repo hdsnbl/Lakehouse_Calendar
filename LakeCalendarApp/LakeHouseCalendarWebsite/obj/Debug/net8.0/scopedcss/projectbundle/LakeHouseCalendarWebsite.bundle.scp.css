@@ -1,0 +1,276 @@
+/* _content/LakeHouseCalendarWebsite/Pages/Home.razor.rz.scp.css */
+body[b-jhmelcnfea] {
+}
+
+section[b-jhmelcnfea] {
+    display: grid;
+    grid-template-columns: repeat(7, 125px);
+}
+
+section > div[b-jhmelcnfea] {
+    border: 1px solid black;
+    padding: 10px;
+}
+/* _content/LakeHouseCalendarWebsite/Pages/MakeRequest.razor.rz.scp.css */
+body[b-77kj7syib8] {
+    font: bold;
+}
+
+section[b-77kj7syib8]{
+    display: grid;
+
+}
+section > div[b-77kj7syib8]{
+    border: 1px solid black;
+    padding: 10px;
+    width: fit-content;
+    /*display: inline-block;
+    vertical-align: middle;
+    line-height: 1;*/
+}
+
+button[b-77kj7syib8]{
+    width: 300px
+    
+}
+
+.modal[b-77kj7syib8] {
+    /*display: none; *//* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content[b-77kj7syib8] {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: fit-content; /* Could be more or less, depending on screen size */
+}
+
+/* The Close Button */
+.close[b-77kj7syib8] {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover[b-77kj7syib8],
+.close:focus[b-77kj7syib8] {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}  
+/* _content/LakeHouseCalendarWebsite/Pages/Requests.razor.rz.scp.css */
+body[b-5bbtf30ol0] {
+}
+
+section[b-5bbtf30ol0]{
+    
+}
+
+section > div[b-5bbtf30ol0]{
+    border: 2px solid black;
+    width: fit-content;
+    text-align: center;
+}
+
+.button[b-5bbtf30ol0]{
+    padding: 10px;
+    margin: 8px;
+    width: 100px;
+}
+
+#approve[b-5bbtf30ol0] {
+    background-color: lightgreen;
+}
+#disapprove[b-5bbtf30ol0] {
+    background-color: indianred;
+}
+
+/* The Modal (background) */
+.modal[b-5bbtf30ol0] {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content[b-5bbtf30ol0] {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: fit-content; /* Could be more or less, depending on screen size */
+}
+
+/* The Close Button */
+.close[b-5bbtf30ol0] {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover[b-5bbtf30ol0],
+.close:focus[b-5bbtf30ol0] {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}  
+/* _content/LakeHouseCalendarWebsite/Shared/MainLayout.razor.rz.scp.css */
+.page[b-hpdd8t871i] {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+main[b-hpdd8t871i] {
+    flex: 1;
+}
+
+.sidebar[b-hpdd8t871i] {
+    background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
+}
+
+.top-row[b-hpdd8t871i] {
+    background-color: #f7f7f7;
+    border-bottom: 1px solid #d6d5d5;
+    justify-content: flex-end;
+    height: 3.5rem;
+    display: flex;
+    align-items: center;
+}
+
+    .top-row[b-hpdd8t871i]  a, .top-row .btn-link[b-hpdd8t871i] {
+        white-space: nowrap;
+        margin-left: 1.5rem;
+    }
+
+    .top-row a:first-child[b-hpdd8t871i] {
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+@media (max-width: 640.98px) {
+    .top-row:not(.auth)[b-hpdd8t871i] {
+        display: none;
+    }
+
+    .top-row.auth[b-hpdd8t871i] {
+        justify-content: space-between;
+    }
+
+    .top-row a[b-hpdd8t871i], .top-row .btn-link[b-hpdd8t871i] {
+        margin-left: 0;
+    }
+}
+
+@media (min-width: 641px) {
+    .page[b-hpdd8t871i] {
+        flex-direction: row;
+    }
+
+    .sidebar[b-hpdd8t871i] {
+        width: 250px;
+        height: 100vh;
+        position: sticky;
+        top: 0;
+    }
+
+    .top-row[b-hpdd8t871i] {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+    }
+
+    .top-row[b-hpdd8t871i], article[b-hpdd8t871i] {
+        padding-left: 2rem !important;
+        padding-right: 1.5rem !important;
+    }
+}
+/* _content/LakeHouseCalendarWebsite/Shared/NavMenu.razor.rz.scp.css */
+.navbar-toggler[b-hkf5o6f4tn] {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.top-row[b-hkf5o6f4tn] {
+    height: 3.5rem;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.navbar-brand[b-hkf5o6f4tn] {
+    font-size: 1.1rem;
+}
+
+.oi[b-hkf5o6f4tn] {
+    width: 2rem;
+    font-size: 1.1rem;
+    vertical-align: text-top;
+    top: -2px;
+}
+
+.nav-item[b-hkf5o6f4tn] {
+    font-size: 0.9rem;
+    padding-bottom: 0.5rem;
+}
+
+    .nav-item:first-of-type[b-hkf5o6f4tn] {
+        padding-top: 1rem;
+    }
+
+    .nav-item:last-of-type[b-hkf5o6f4tn] {
+        padding-bottom: 1rem;
+    }
+
+    .nav-item[b-hkf5o6f4tn]  a {
+        color: #d7d7d7;
+        border-radius: 4px;
+        height: 3rem;
+        display: flex;
+        align-items: center;
+        line-height: 3rem;
+    }
+
+.nav-item[b-hkf5o6f4tn]  a.active {
+    background-color: rgba(255,255,255,0.25);
+    color: white;
+}
+
+.nav-item[b-hkf5o6f4tn]  a:hover {
+    background-color: rgba(255,255,255,0.1);
+    color: white;
+}
+
+@media (min-width: 641px) {
+    .navbar-toggler[b-hkf5o6f4tn] {
+        display: none;
+    }
+
+    .collapse[b-hkf5o6f4tn] {
+        /* Never collapse the sidebar for wide screens */
+        display: block;
+    }
+    
+    .nav-scrollable[b-hkf5o6f4tn] {
+        /* Allow sidebar to scroll for tall menus */
+        height: calc(100vh - 3.5rem);
+        overflow-y: auto;
+    }
+}

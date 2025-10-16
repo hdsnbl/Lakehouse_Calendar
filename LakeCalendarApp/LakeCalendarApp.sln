@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34701.34
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LakeCalendarApi", "LakeCalendarApi\LakeCalendarApi.csproj", "{163C5A11-929D-4572-8E2C-A9207BB70540}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LakeHouseCalendarWebsite", "LakeHouseCalendarWebsite\LakeHouseCalendarWebsite.csproj", "{B2E7A2A2-D92C-4E00-81B8-0102D906090A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{163C5A11-929D-4572-8E2C-A9207BB70540}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{163C5A11-929D-4572-8E2C-A9207BB70540}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{163C5A11-929D-4572-8E2C-A9207BB70540}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{163C5A11-929D-4572-8E2C-A9207BB70540}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B2E7A2A2-D92C-4E00-81B8-0102D906090A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2E7A2A2-D92C-4E00-81B8-0102D906090A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B2E7A2A2-D92C-4E00-81B8-0102D906090A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B2E7A2A2-D92C-4E00-81B8-0102D906090A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {95BB11DA-E224-480D-87CE-2470C6FCEEEF}
+	EndGlobalSection
+EndGlobal

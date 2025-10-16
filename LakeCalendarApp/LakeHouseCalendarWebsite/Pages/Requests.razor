@@ -1,0 +1,134 @@
+﻿@page "/requests"
+@inject ApiService apiService;
+@inject ICalendar calendar;
+@inject NavigationManager NavigationManager;
+
+<PageTitle>Requests</PageTitle>
+
+<h1>Requests</h1>
+
+<section>
+    
+    @* @for (int i = 0; i < requests.Count; i++)
+    {
+        Ids.Add(0);
+        for (int j = 0; j < Ids.Count; j++)
+        {
+            if (requests[i].Id == Ids[j])
+            {
+                Ids[j] += 1;
+            }
+        }
+    } *@
+
+    @for (int i = 0; i < calendar.Items.Count; i++)           
+    {
+        var currentItem = calendar.Items[i];
+        <div>
+            <p>@calendar.Items[i].Date</p>
+            <p>Family: @calendar.Items[i].Name</p>
+            <p>
+                Exclusive: @if (@calendar.Items[i].Exclusive == true)
+                {
+                    <p>Yes</p>
+                } else if (@calendar.Items[i].Exclusive == false)
+                {
+                    <p>No</p>
+                }
+            </p>
+            <button class="button" id="approve" @onclick="() => Approve(currentItem)">Approve</button>
+            <button class="button" id="disapprove" @onclick="() => Disapprove(currentItem)">Disapprove</button>
+        </div>
+    }
+</section>
+
+@code {
+
+    List<int> Ids = new List<int>();
+    //List<Request> requests = new List<Request>();
+    List<CalendarItem> requests = new List<CalendarItem>();
+    CalendarItem request = new CalendarItem();
+    bool showApproveModal = false;
+    bool showDisapproveModal = false;
+    //temporary
+    //Request temp = new Request();
+
+
+
+    protected override void OnInitialized()
+    {
+        var apiItems = apiService.GetRequests();
+
+        foreach (var apiitem in apiItems)
+        {
+            var item = calendar.Items.FirstOrDefault(n => n.Date == apiitem.Date);
+            if (item == null)
+            {
+                calendar.Items.Add(apiitem);
+            }
+        }
+
+        calendar.Items = calendar.Items
+            .Where(item => item.Approved == null)
+            .ToList();
+    }
+
+    void Approve(CalendarItem item)
+    {
+        //items.Add(new CalendarItem(request.CalendarItem.Date, request.CalendarItem.Name, request.CalendarItem.Exclusive));
+        item.Approved = true;
+        // NavigationManager.NavigateTo("/Requests");
+        // NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
+        OnInitialized();
+    }
+    void Disapprove(CalendarItem item)
+    {
+        item.Approved = false;
+        // NavigationManager.NavigateTo("/Requests");
+        // NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
+        OnInitialized();
+    }
+    void OpenApproveModal(CalendarItem item)
+    {
+        request = item;
+        showApproveModal = true;
+    }
+
+    void OpenDisapproveModal(CalendarItem item)
+    {
+        request = item;
+        showDisapproveModal = true;
+    }
+
+    void CloseModals()
+    {
+        showApproveModal = false;
+        showDisapproveModal = false;
+    }
+}
+
+@if (showApproveModal)
+{
+    <div class="modal">
+        <div class="modal-content">
+            <h3>Are you sure you want to APPROVE?</h3>
+            <div>
+                <button class="button" @onclick="() => { Approve(request); CloseModals(); }">Approve</button>
+                <button class="button" @onclick="CloseModals">Cancel</button>
+            </div>
+        </div>
+    </div>
+}
+
+@if (showDisapproveModal)
+{
+    <div class="modal">
+        <div class="modal-content">
+            <h3>Are you sure you want to DISAPPROVE?</h3>
+            <div>
+                <button class="button" @onclick="() => { Disapprove(request); CloseModals(); }">Disapprove</button>
+                <button class="button" @onclick="CloseModals">Cancel</button>
+            </div>
+        </div>
+    </div>
+}

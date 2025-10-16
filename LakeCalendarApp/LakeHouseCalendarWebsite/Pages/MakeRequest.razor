@@ -1,0 +1,132 @@
+﻿@page "/makeRequest"
+@inject ICalendar calendar;
+@inject NavigationManager NavigationManager;
+@inject IJSRuntime JSRuntime
+
+<PageTitle>MakeRequest</PageTitle>
+
+<h1>Make a Request</h1>
+
+
+<section>
+    
+    <b>Date Range:</b>
+    <div>
+        <label for="start">Start Date: </label> <input type="date" id="start" name="start" @bind="start"/>
+        <label for="end">End Date: </label> <input type="date" id="end" name="end" @bind="end"/>
+    </div>
+    <div>
+        <input type="text" id="family" name="family" placeholder="Enter your family name" @bind="family" />
+    </div>
+    <div>
+        <label for="exclusive">Exclusive: </label> <input type="checkbox" id=" exclusive" name="exclusive" @bind="exclusive" />
+    </div>
+    
+
+    <button @onclick="makeRequest" style="background-color: lightgreen">Make Request</button>
+
+    <div id="dateError" class="modal" style="@error">
+        <!-- Modal content -->
+        <div class="modal-content">
+            <h2 style="background-color:red">Errors:</h2>
+            <h3>@errorText</h3>
+            <div>
+                <button class="button" id="cancel" onclick="document.getElementById('dateError').style.display='none'">&times;</button>               @* close the modal *@
+            </div>
+        </div>
+    </div>
+    @if (permissionVisible)         @* made this so when the modal is closed it refreshes the page *@
+    {
+        <div id="permission" class="modal" style="@permission">
+            <!-- Modal content -->
+            <div class="modal-content">
+                <h2 style="background-color:red">Error:</h2>
+                <h3>Need permission from parents for exclusive requests</h3>
+                <div>
+                    <button class="button" id="cancel" @onclick="exit">&times;</button>               @* close the modal *@
+                </div>
+            </div>
+        </div>
+    }
+    
+</section>
+
+@code {
+    DateTime start = DateTime.Now;
+    DateTime end = DateTime.Now;
+    string family = "";
+    bool exclusive;
+    bool? approved;
+    private string error = "display:none";
+    private string errorText = "";
+    private string permission = "display:none";
+    bool permissionVisible = true;
+
+
+
+    protected override void OnInitialized()
+    {
+
+    }
+
+    private void exit()
+    {
+        bool permissionVisible = false;
+        NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
+    }
+
+    private void makeRequest()
+    {
+        if (!ValidateRequest())
+        {
+            return;
+        }
+
+        for (DateTime date = start.Date; date <= end.Date; date = date.AddDays(1))
+        {   
+            var calendarItem = new CalendarItem();
+
+            calendarItem.Date = date;
+            calendarItem.Name = family;
+            calendarItem.Exclusive = exclusive;
+            //calendarItem.Requests.Add(new Request(new Random(100000).Next(), date, family, exclusive));
+            calendarItem.Approved = null;
+            calendar.Items.Add(calendarItem);
+        }
+
+        //if (exclusive == true){
+        //permission = "display:block;white-space: pre-wrap;text-align: center";
+        //send message to parents asking for permission
+        //}
+
+        NavigationManager.NavigateTo("/Requests");
+
+    }
+
+    private bool ValidateRequest()
+    {
+        bool valid = true;
+        error = "display:none";
+        errorText = "";
+        if (end < start)
+        {
+            error = "display:block;white-space: pre-wrap;text-align: center";
+            errorText += "End date is before Start date\n\r";
+            valid = false;
+        }
+        if (family == "")
+        {
+            error = "display:block;white-space: pre-wrap;text-align: center";
+            errorText += "Enter a family name\n\r";
+            valid = false;
+        }
+        if (exclusive == true)
+        {
+            permission = "display:block;white-space: pre-wrap;text-align: center";
+            valid = false;
+            //send message to parents asking for permission
+        }
+        return valid;
+    }
+}
+

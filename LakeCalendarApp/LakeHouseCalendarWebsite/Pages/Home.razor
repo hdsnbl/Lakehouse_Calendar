@@ -1,0 +1,130 @@
+﻿@page "/"
+@* @inject Request request; *@
+@* @inject CalendarItem items; *@
+@inject ICalendar calendar;
+@inject ApiService apiService;
+
+
+<PageTitle>Home</PageTitle>
+
+<h1>Allen Lakehouse Calendar</h1>
+
+@* <SurveyPrompt Title="How is Blazor working for you?" /> *@
+
+@code{
+    // private ApiService apiService = new ApiService();
+    string monthName = "";
+    DateTime monthEnd;
+    int numDummyColumn = 0;
+    int monthsAway = 0;
+    int year = 2024;
+    int month = 0;
+
+    List<CalendarItem> monthlyItems = new List<CalendarItem>();
+    List<Day> daysOfMonth = new List<Day>();
+
+    protected override void OnInitialized()
+    {
+        //base.OnInitialized();
+        //items.Date = new DateTime();
+        //calendar.Items.Clear();
+
+        //calendar.AddToCalendar(new CalendarItem(new DateTime(2024, 6, 25), "Test Day 1", true));
+
+        CreateMonth();
+    }
+
+    void CreateMonth()
+    {
+        //calendar.Items.Clear();
+        monthlyItems.Clear();
+        daysOfMonth.Clear();
+
+        var tempDate = DateTime.Now.AddMonths(monthsAway);
+        month = tempDate.Month;
+        year = tempDate.Year;
+
+        DateTime monthStart = new DateTime(year, month, 1);
+        monthEnd = monthStart.AddMonths(1).AddDays(-1);
+        monthName = monthStart.Month switch
+        {
+            1 => "January",
+            2 => "February",
+            3 => "March",
+            4 => "April",
+            5 => "May",
+            6 => "June",
+            7 => "July",
+            8 => "August",
+            9 => "September",
+            10 => "October",
+            11 => "November",
+            12 => "December",
+            _ => ""
+        };
+
+        var apiItems = apiService.GetCalendarItems(monthStart, monthEnd);
+
+        foreach (var apiitem in apiItems)
+        {
+            var item = calendar.Items.FirstOrDefault(n => n.Date == apiitem.Date);
+            if (item == null)
+            {
+                calendar.Items.Add(apiitem);
+            }
+        }
+        calendar.Items = calendar.Items
+            .Where(item => item.Approved == true)
+            .ToList();
+
+        numDummyColumn = (int)monthStart.DayOfWeek;
+    }
+}
+
+
+<button @onclick="() => { monthsAway--; CreateMonth(); }">Previous Month</button>
+<h1>@monthName, @year</h1>
+<button @onclick="() => { monthsAway++; CreateMonth(); }">Next Month</button>
+
+<section>
+    @for (int i = 0; i < numDummyColumn; i++)
+    {
+        <div></div>
+    }
+    @for (int i = 1; i <= monthEnd.Day; i++)
+    {
+        var day = new Day();
+        CalendarItem? calendarItem = null;
+        @if (calendar.Items.Count != 0)
+        {
+            calendarItem = calendar.Items.FirstOrDefault(n => n.Date == new DateTime(year, month, i));
+
+            if (calendarItem != null)       // && calendarItem.requests
+            {
+                monthlyItems.Add(calendarItem!);
+                day.calendarItems.Add(calendarItem);
+            }
+            else
+            {
+                calendarItem = new CalendarItem();
+            }
+
+        }
+
+        daysOfMonth.Add(day);
+        //items.FirstOrDefault(n => n.Date == new DateTime(year, month, i));
+
+        
+        //var calendarItem = calendar.Items.FirstOrDefault(n => n.Date == new DateTime(year, month, i));
+
+        <div style="@(calendarItem!.Exclusive == null ? "background-color: white;" : (calendarItem.Exclusive == true ? "background-color: indianred;" : "background-color: lightgreen;"))">
+            <h2>@i</h2>
+            @if (calendarItem != null)
+            {
+                <p>@calendarItem.Name</p>
+            }
+        </div>
+    }
+
+</section>
+
