@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("LakeCalendarApi")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+45acf76ab9311a4d80169add82cf0df7a2a887de")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3406772827cf98a5923f8074b6cceb1ad9f0620f")]
 [assembly: System.Reflection.AssemblyProductAttribute("LakeCalendarApi")]
 [assembly: System.Reflection.AssemblyTitleAttribute("LakeCalendarApi")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
