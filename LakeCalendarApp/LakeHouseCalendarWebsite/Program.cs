@@ -1,6 +1,26 @@
 using LakeHouseCalendarWebsite.Classes;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using (var connection = new Npgsql.NpgsqlConnection("Host=localhost;Database=Lakehouse_Calendar;Username=postgres;Password=yourpassword"))
+{                                                                                               //Username is not postgres
+    connection.Open();
+
+    string sql = @"
+        CREATE TABLE IF NOT EXISTS calendar (
+            id SERIAL PRIMARY KEY,
+            name TEXT NOT NULL,
+            exclusive BOOL NOT NULL,
+            approved BOOL,
+            date TIMESTAMP NOT NULL
+        );
+    ";
+
+    using (var command = new Npgsql.NpgsqlCommand(sql, connection))
+    {
+        command.ExecuteNonQuery();
+    }
+}
+
 
 var builder = WebApplication.CreateBuilder(args);
 
