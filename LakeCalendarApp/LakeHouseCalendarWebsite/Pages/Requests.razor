@@ -39,6 +39,9 @@
         
         var events = ApiService.GetAllCalendarEvents();
 
+        // Clear local calendar list and rebuild
+        calendar.Items.Clear();
+
         foreach (var e in events)
         {
             // var item = calendar.Items.FirstOrDefault(n => n.Date == e.Date);
@@ -46,7 +49,8 @@
             // {
             //     calendar.Items.Add(e);
             // }
-            bool exists = calendar.Items.Any(n => n.Date == e.Date && n.Name == e.Name);
+
+            bool exists = calendar.Items.Any(n => n.Date == e.Date && n.Name == e.Name && n.Approved == e.Approved);
             if (!exists)
             {
                 calendar.Items.Add(e);
@@ -54,11 +58,10 @@
             // calendar.Items = calendar.Items
             //     .Where(item => item.Approved == null)
             //     .ToList();
-            requests = calendar.Items
+        }
+        requests = calendar.Items
                 .Where(item => item.Approved == null)
                 .ToList();
-
-        }
     }
 
     void Approve(CalendarItem item)
