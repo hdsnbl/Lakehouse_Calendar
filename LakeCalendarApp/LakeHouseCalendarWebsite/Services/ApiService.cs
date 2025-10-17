@@ -3,7 +3,6 @@
 using Newtonsoft.Json;
 using Npgsql;
 using static System.Runtime.InteropServices.JavaScript.JSType;
-//using static LakeHouseCalendarWebsite.Classes.CalendarItem;
 
 namespace LakeHouseCalendarWebsite.Services
 {
@@ -41,7 +40,6 @@ namespace LakeHouseCalendarWebsite.Services
 
             return calendarItems;
         }
-
         public List<CalendarItem> GetAllCalendarItems()
         {
             var calendarItems = new List<CalendarItem>();
@@ -49,7 +47,6 @@ namespace LakeHouseCalendarWebsite.Services
 
             return calendarItems;
         }
-
         //public List<Request> GetRequests()
         //{
         //    var requestItems = new List<Request>();

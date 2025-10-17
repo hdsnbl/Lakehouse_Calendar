@@ -41,7 +41,7 @@
     <div id="dateError" class="modal" style="@error">
         <!-- Modal content -->
         <div class="modal-content">
-            <h2 style="background-color:red">Errors:</h2>
+            <h2 style="background-color:indianred">Error:</h2>
             <h3>@errorText</h3>
             <div>
                 <button class="button" id="cancel" @onclick="CloseErrorModal">&times;</button>                @* close the modal *@
@@ -59,6 +59,7 @@
     bool exclusive;
     bool? approved;
     bool duplicate;
+    bool claimed;
     private string error = "display:none";
     private string errorText = "";
     Request request;
@@ -83,10 +84,16 @@
         }
         for (DateTime date = start.Date; date <= end.Date; date = date.AddDays(1))
         {
-            bool exists = calendar.Items.Any(n => n.Date == date && n.Name == family && n.Approved == true);
+            bool exists = calendar.Items.Any(n => n.Date == date && n.Name == family && n.Approved == true);        //Checks if there is already an item with the same date and name that is approved (don't want duplicates)
+            bool taken = calendar.Items.Any(n => n.Date == date && n.Exclusive == true && n.Approved == true);      //Checks if there is already an item with the same date that is approved an exclusive (Can't request that day if its been claimed as an exclusive day)
             if (exists)
             {
                 duplicate = true;
+                ValidateRequest();
+                return;
+            }else if (taken)
+            {
+                claimed = true;
                 ValidateRequest();
                 return;
             }
@@ -145,6 +152,13 @@
             errorText += "This request has already been approved\n\r";
             valid = false;
             duplicate = false;
+        }
+        if (claimed == true)
+        {
+            error = "display:block;white-space: pre-wrap;text-align: center";
+            errorText += "This day has already been exclusively claimed\n\r";
+            valid = false;
+            claimed = false;
         }
         if (!valid)
         {

@@ -8,19 +8,6 @@
 <h1>Requests:</h1>
 
 <section>
-    
-    @* @for (int i = 0; i < requests.Count; i++)
-    {
-        Ids.Add(0);
-        for (int j = 0; j < Ids.Count; j++)
-        {
-            if (requests[i].Id == Ids[j])
-            {
-                Ids[j] += 1;
-            }
-        }
-    } *@
-
     @if (requests.Count != 0)
     {
         @foreach (var currentItem in requests)
@@ -38,23 +25,14 @@
     {
         <h2>There are currently no requests!</h2>
     }
-
-    
 </section>
 
 @code {
-
     List<int> Ids = new List<int>();
-    //List<Request> requests = new List<Request>();
     List<CalendarItem> requests = new List<CalendarItem>();
     CalendarItem request = new CalendarItem();
     bool showApproveModal = false;
     bool showDisapproveModal = false;
-
-    //temporary
-    //Request temp = new Request();
-
-
 
     protected override void OnInitialized()
     {
@@ -81,20 +59,6 @@
                 .ToList();
 
         }
-
-        // var apiItems = apiService.GetRequests();
-        // foreach (var apiitem in apiItems)
-        // {
-        //     var item = calendar.Items.FirstOrDefault(n => n.Date == apiitem.Date);
-        //     if (item == null)
-        //     {
-        //         calendar.Items.Add(apiitem);
-        //     }
-        // }
-
-        // calendar.Items = calendar.Items
-        //     .Where(item => item.Approved == null)
-        //     .ToList();
     }
 
     void Approve(CalendarItem item)
@@ -105,14 +69,6 @@
         requests = calendar.Items
                 .Where(item => item.Approved == null)
                 .ToList();
-        // ApiService.AddCalendarEvent(
-        //     name: item.Name,
-        //     exclusive: item.Exclusive,
-        //     approved: item.Approved,
-        //     date: item.Date
-        // );
-        //ApiService.DeleteCalendarEvent(item.Id);
-        //OnInitialized();
     }
     void Disapprove(CalendarItem item)
     {
@@ -122,10 +78,6 @@
         requests = calendar.Items
                 .Where(item => item.Approved == null)
                 .ToList();
-        //ApiService.DeleteCalendarEvent(item.Id);
-        //OnInitialized();
-        // NavigationManager.NavigateTo("/Requests");
-        // NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
     }
     void OpenApproveModal(CalendarItem item)
     {

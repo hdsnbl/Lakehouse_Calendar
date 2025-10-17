@@ -26,18 +26,11 @@
 
     protected override void OnInitialized()
     {
-        //base.OnInitialized();
-        //items.Date = new DateTime();
-        //calendar.Items.Clear();
-
-        //calendar.AddToCalendar(new CalendarItem(new DateTime(2024, 6, 25), "Test Day 1", true));
-        
         CreateMonth();
     }
 
     void CreateMonth()
     {
-        //calendar.Items.Clear();
         monthlyItems.Clear();
         daysOfMonth.Clear();
 
@@ -64,12 +57,11 @@
             _ => ""
         };
 
-        //var apiItems = apiService.GetCalendarItems(monthStart, monthEnd);
         var apiItems = ApiService.GetCalendarEvents(monthStart, monthEnd);
 
         foreach (var apiitem in apiItems)
         {
-            // var item = calendar.Items.FirstOrDefault(n => n.Date == apiitem.Date);          //Need to change so that duplicate dates can be shown
+            // var item = calendar.Items.FirstOrDefault(n => n.Date == apiitem.Date);          
             // if (item == null)
             // {
             //     calendar.Items.Add(apiitem);
@@ -109,22 +101,6 @@
         var day = new Day();
         CalendarItem? calendarItem = null;
         List<CalendarItem>? calendarItemsOnDate = null;
-@*         @if (calendar.Items.Count != 0)
-        {
-            calendarItem = calendar.Items.FirstOrDefault(n => n.Date == new DateTime(year, month, i));
-
-            if (calendarItem != null)       // && calendarItem.requests
-            {
-                monthlyItems.Add(calendarItem!);
-                day.calendarItems.Add(calendarItem);
-            }
-            else
-            {
-                calendarItem = new CalendarItem();
-            }
-
-        }
- *@
         @if (calendar.Items.Count != 0)
         {
             // Get all items that have the same date (same year/month/day)
@@ -159,9 +135,6 @@
             }
         }
         daysOfMonth.Add(day);
-        //items.FirstOrDefault(n => n.Date == new DateTime(year, month, i));
-
-        //var calendarItem = calendar.Items.FirstOrDefault(n => n.Date == new DateTime(year, month, i));
 
         <div style="@(calendarItem!.Exclusive == null ? "background-color: white;" : (calendarItem.Exclusive == true ? "background-color: indianred;" : "background-color: lightgreen;"))">
             <h2>@i</h2>
