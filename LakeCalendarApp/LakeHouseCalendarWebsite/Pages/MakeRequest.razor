@@ -44,7 +44,7 @@
             <h2 style="background-color:red">Errors:</h2>
             <h3>@errorText</h3>
             <div>
-                <button class="button" id="cancel" onclick="document.getElementById('dateError').style.display='none'">&times;</button>               @* close the modal *@
+                <button class="button" id="cancel" @onclick="CloseErrorModal">&times;</button>                @* close the modal *@
             </div>
         </div>
     </div>
@@ -58,23 +58,21 @@
     string family = "";
     bool exclusive;
     bool? approved;
+    bool duplicate;
     private string error = "display:none";
     private string errorText = "";
-    private string permission = "display:none";
-    bool permissionVisible = true;
     Request request;
-
-
 
     protected override void OnInitialized()
     {
 
     }
 
-    private void exit()
+    private void CloseErrorModal()
     {
-        bool permissionVisible = false;
-        NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
+        error = "display:none";
+        errorText = "";
+        StateHasChanged(); // refresh UI
     }
 
     private void makeRequest()
@@ -82,6 +80,16 @@
         if (!ValidateRequest())
         {
             return;
+        }
+        for (DateTime date = start.Date; date <= end.Date; date = date.AddDays(1))
+        {
+            bool exists = calendar.Items.Any(n => n.Date == date && n.Name == family && n.Approved == true);
+            if (exists)
+            {
+                duplicate = true;
+                ValidateRequest();
+                return;
+            }
         }
 
         for (DateTime date = start.Date; date <= end.Date; date = date.AddDays(1))
@@ -91,10 +99,9 @@
             calendarItem.Date = date;
             calendarItem.Name = family;
             calendarItem.Exclusive = exclusive;
-            //calendarItem.Requests.Add(new Request(new Random(100000).Next(), date, family, exclusive));
             calendarItem.Approved = null;
-            calendar.Items.Add(calendarItem);
 
+            calendar.Items.Add(calendarItem);
             ApiService.AddCalendarEvent(
                 name: family,
                 exclusive: exclusive,
@@ -102,7 +109,7 @@
                 date: date
             );
 
-            if (start.Date == date)
+            if (start.Date == date)                         //  Beginnings of trying to make Requests that hold multiple CalendarItems to display in requests page
             {
                 request = new Request(calendarItem);
             }else if (start.Date != date)
@@ -110,14 +117,6 @@
                 request.FullRequest.Add(calendarItem);
             }
         }
-
-        
-
-
-        //if (exclusive == true){
-        //permission = "display:block;white-space: pre-wrap;text-align: center";
-        //send message to parents asking for permission
-        //}
 
         NavigationManager.NavigateTo("/Requests");
 
@@ -140,6 +139,18 @@
             errorText += "Enter a family name\n\r";
             valid = false;
         }
+        if (duplicate == true)
+        {
+            error = "display:block;white-space: pre-wrap;text-align: center";
+            errorText += "This request has already been approved\n\r";
+            valid = false;
+            duplicate = false;
+        }
+        if (!valid)
+        {
+            StateHasChanged(); // forces modal to appear again even if it was hidden manually
+        }
+
         return valid;
     }
 }

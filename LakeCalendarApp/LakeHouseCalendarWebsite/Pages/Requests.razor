@@ -21,41 +21,20 @@
         }
     } *@
 
-    @if (calendar.Items.Count != 0)
+    @if (requests.Count != 0)
     {
-        @for (int i = 0; i < calendar.Items.Count; i++)
+        @foreach (var currentItem in requests)
         {
-            var currentItem = calendar.Items[i];
-            <div style="
-                display: block;
-                width: 80%; /* width of the container box */
-                max-width: 500px; /* optional max width */
-                /*margin: 50px auto;  center horizontally on the page */
-                border: 2px solid #333; /* box border */
-                padding: 10px; /* space inside the box */
-                background-color: #f5f5f5; /* optional background */
-                box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* optional shadow */
-                justify-items: center; /* center cells horizontally */
-                align-items: center; /* center cells vertically */
-                text-align: center; /* center text inside cells */
-            ">
-                <p>Date: @calendar.Items[i].Date</p>
-                
-                <p>Family: @calendar.Items[i].Name</p>
-                <p>
-                    @if (@calendar.Items[i].Exclusive == true)
-                    {
-                    <p>Exclusive: Yes</p>
-                } else if (@calendar.Items[i].Exclusive == false)
-                {
-                    <p>Exclusive: No</p>
-                }
-                </p>
-                <button class="button" id="approve" @onclick="() => Approve(currentItem)">Approve</button>
-                <button class="button" id="disapprove" @onclick="() => Disapprove(currentItem)">Disapprove</button>
+            <div style="display: block; width: 80%; max-width: 500px; border: 2px solid #333; padding: 10px; background-color: #f5f5f5; box-shadow: 0 4px 8px rgba(0,0,0,0.2); text-align: center;">
+                <p>Date: @currentItem.Date</p>
+                <p>Family: @currentItem.Name</p>
+                <p>Exclusive: @(currentItem.Exclusive == true ? "Yes" : "No")</p>
+                <button class="button" @onclick="() => Approve(currentItem)">Approve</button>
+                <button class="button" @onclick="() => Disapprove(currentItem)">Disapprove</button>
             </div>
         }
-    } else
+    }
+    else
     {
         <h2>There are currently no requests!</h2>
     }
@@ -83,13 +62,20 @@
 
         foreach (var e in events)
         {
-            //Console.WriteLine($"Name: {e.Name}, Exclusive: {e.Exclusive}, Approved: {e.Approved}, Date: {e.Date}");
-            var item = calendar.Items.FirstOrDefault(n => n.Date == e.Date);
-            if (item == null)
+            // var item = calendar.Items.FirstOrDefault(n => n.Date == e.Date);
+            // if (item == null)
+            // {
+            //     calendar.Items.Add(e);
+            // }
+            bool exists = calendar.Items.Any(n => n.Date == e.Date && n.Name == e.Name);
+            if (!exists)
             {
                 calendar.Items.Add(e);
             }
-            calendar.Items = calendar.Items
+            // calendar.Items = calendar.Items
+            //     .Where(item => item.Approved == null)
+            //     .ToList();
+            requests = calendar.Items
                 .Where(item => item.Approved == null)
                 .ToList();
 
@@ -115,6 +101,9 @@
         item.Approved = true;
         ApiService.UpdateCalendarEvent(item);
         
+        requests = calendar.Items
+                .Where(item => item.Approved == null)
+                .ToList();
         // ApiService.AddCalendarEvent(
         //     name: item.Name,
         //     exclusive: item.Exclusive,
@@ -122,17 +111,20 @@
         //     date: item.Date
         // );
         //ApiService.DeleteCalendarEvent(item.Id);
-        OnInitialized();
+        //OnInitialized();
     }
     void Disapprove(CalendarItem item)
     {
-        // item.Approved = false;
-        // ApiService.UpdateCalendarEvent(item);
+        item.Approved = false;
+        ApiService.UpdateCalendarEvent(item);
 
-        ApiService.DeleteCalendarEvent(item.Id);
-        OnInitialized();
-        NavigationManager.NavigateTo("/Requests");
-        NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
+        requests = calendar.Items
+                .Where(item => item.Approved == null)
+                .ToList();
+        //ApiService.DeleteCalendarEvent(item.Id);
+        //OnInitialized();
+        // NavigationManager.NavigateTo("/Requests");
+        // NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
     }
     void OpenApproveModal(CalendarItem item)
     {
