@@ -61,6 +61,7 @@
         }
         requests = calendar.Items
                 .Where(item => item.Approved == null)
+                .OrderBy(item => item.Date)
                 .ToList();
     }
 
