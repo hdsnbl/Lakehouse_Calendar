@@ -29,8 +29,8 @@
                 <p>Date: @currentItem.Date</p>
                 <p>Family: @currentItem.Name</p>
                 <p>Exclusive: @(currentItem.Exclusive == true ? "Yes" : "No")</p>
-                <button class="button" @onclick="() => Approve(currentItem)">Approve</button>
-                <button class="button" @onclick="() => Disapprove(currentItem)">Disapprove</button>
+                <button class="button" id="approve" @onclick="() => Approve(currentItem)">Approve</button>
+                <button class="button" id="disapprove" @onclick="() => Disapprove(currentItem)">Disapprove</button>
             </div>
         }
     }
@@ -50,6 +50,7 @@
     CalendarItem request = new CalendarItem();
     bool showApproveModal = false;
     bool showDisapproveModal = false;
+
     //temporary
     //Request temp = new Request();
 
