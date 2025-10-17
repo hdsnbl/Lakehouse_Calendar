@@ -5,7 +5,7 @@
 
 <PageTitle>Requests</PageTitle>
 
-<h1>Requests</h1>
+<h1>Requests:</h1>
 
 <section>
     
@@ -21,25 +21,46 @@
         }
     } *@
 
-    @for (int i = 0; i < calendar.Items.Count; i++)           
+    @if (calendar.Items.Count != 0)
     {
-        var currentItem = calendar.Items[i];
-        <div>
-            <p>@calendar.Items[i].Date</p>
-            <p>Family: @calendar.Items[i].Name</p>
-            <p>
-                Exclusive: @if (@calendar.Items[i].Exclusive == true)
-                {
-                    <p>Yes</p>
+        @for (int i = 0; i < calendar.Items.Count; i++)
+        {
+            var currentItem = calendar.Items[i];
+            <div style="
+                display: block;
+                width: 80%; /* width of the container box */
+                max-width: 500px; /* optional max width */
+                /*margin: 50px auto;  center horizontally on the page */
+                border: 2px solid #333; /* box border */
+                padding: 10px; /* space inside the box */
+                background-color: #f5f5f5; /* optional background */
+                box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* optional shadow */
+                justify-items: center; /* center cells horizontally */
+                align-items: center; /* center cells vertically */
+                text-align: center; /* center text inside cells */
+            ">
+                <p>Date: @calendar.Items[i].Date</p>
+                
+                <p>Family: @calendar.Items[i].Name</p>
+                <p>
+                    @if (@calendar.Items[i].Exclusive == true)
+                    {
+                    <p>Exclusive: Yes</p>
                 } else if (@calendar.Items[i].Exclusive == false)
                 {
-                    <p>No</p>
+                    <p>Exclusive: No</p>
                 }
-            </p>
-            <button class="button" id="approve" @onclick="() => Approve(currentItem)">Approve</button>
-            <button class="button" id="disapprove" @onclick="() => Disapprove(currentItem)">Disapprove</button>
-        </div>
+                </p>
+                <button class="button" id="approve" @onclick="() => Approve(currentItem)">Approve</button>
+                <button class="button" id="disapprove" @onclick="() => Disapprove(currentItem)">Disapprove</button>
+            </div>
+        }
+    } else
+    {
+        <h2>There are currently no requests!</h2>
     }
+
+    
 </section>
 
 @code {
@@ -57,36 +78,61 @@
 
     protected override void OnInitialized()
     {
-        var apiItems = apiService.GetRequests();
+        
+        var events = ApiService.GetAllCalendarEvents();
 
-        foreach (var apiitem in apiItems)
+        foreach (var e in events)
         {
-            var item = calendar.Items.FirstOrDefault(n => n.Date == apiitem.Date);
+            //Console.WriteLine($"Name: {e.Name}, Exclusive: {e.Exclusive}, Approved: {e.Approved}, Date: {e.Date}");
+            var item = calendar.Items.FirstOrDefault(n => n.Date == e.Date);
             if (item == null)
             {
-                calendar.Items.Add(apiitem);
+                calendar.Items.Add(e);
             }
+            calendar.Items = calendar.Items
+                .Where(item => item.Approved == null)
+                .ToList();
+
         }
 
-        calendar.Items = calendar.Items
-            .Where(item => item.Approved == null)
-            .ToList();
+        // var apiItems = apiService.GetRequests();
+        // foreach (var apiitem in apiItems)
+        // {
+        //     var item = calendar.Items.FirstOrDefault(n => n.Date == apiitem.Date);
+        //     if (item == null)
+        //     {
+        //         calendar.Items.Add(apiitem);
+        //     }
+        // }
+
+        // calendar.Items = calendar.Items
+        //     .Where(item => item.Approved == null)
+        //     .ToList();
     }
 
     void Approve(CalendarItem item)
     {
-        //items.Add(new CalendarItem(request.CalendarItem.Date, request.CalendarItem.Name, request.CalendarItem.Exclusive));
         item.Approved = true;
-        // NavigationManager.NavigateTo("/Requests");
-        // NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
+        ApiService.UpdateCalendarEvent(item);
+        
+        // ApiService.AddCalendarEvent(
+        //     name: item.Name,
+        //     exclusive: item.Exclusive,
+        //     approved: item.Approved,
+        //     date: item.Date
+        // );
+        //ApiService.DeleteCalendarEvent(item.Id);
         OnInitialized();
     }
     void Disapprove(CalendarItem item)
     {
-        item.Approved = false;
-        // NavigationManager.NavigateTo("/Requests");
-        // NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
+        // item.Approved = false;
+        // ApiService.UpdateCalendarEvent(item);
+
+        ApiService.DeleteCalendarEvent(item.Id);
         OnInitialized();
+        NavigationManager.NavigateTo("/Requests");
+        NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
     }
     void OpenApproveModal(CalendarItem item)
     {

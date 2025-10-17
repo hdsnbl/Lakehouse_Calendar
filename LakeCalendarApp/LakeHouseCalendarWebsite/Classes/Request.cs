@@ -5,36 +5,42 @@ namespace LakeHouseCalendarWebsite.Classes
 {
     public class Request : IRequest
     {
-        public DateTime Date { get; set; }
-        public string Name { get; set; }
-        public bool? Exclusive { get; set; }
-        public enum StatusType { New, Approved, Rejected }
-        public StatusType Status { get; set; }
+        //public DateTime Date { get; set; }
+        //public string Name { get; set; }
+        //public bool? Exclusive { get; set; }
+        //public enum StatusType { New, Approved, Rejected }
+        //public StatusType Status { get; set; }
 
-        public int Id { get; set; }
+        //public int Id { get; set; }
 
-        public Request(int id, DateTime date, string name, bool? exclusive)
+        public List<CalendarItem> FullRequest { get; set; } = new List<CalendarItem>();
+        public Request(CalendarItem item)
         {
-            Id = id;
-            Date = date;
-            Name = name;
-            Exclusive = exclusive;
-            Status = StatusType.New;
+            FullRequest.Add(item);
         }
 
-        public Request(int id, DateTime date, string name, bool? exclusive, StatusType status)
-        {
-            Id = id;
-            Date = date;
-            Name = name;
-            Exclusive = exclusive;
-            Status = status;
-        }
+        //public Request(int id, DateTime date, string name, bool? exclusive)
+        //{
+        //    Id = id;
+        //    Date = date;
+        //    Name = name;
+        //    Exclusive = exclusive;
+        //    Status = StatusType.New;
+        //}
 
-        public Request()
-        {
-            Id = 0;
-        }
+        //public Request(int id, DateTime date, string name, bool? exclusive, StatusType status)
+        //{
+        //    Id = id;
+        //    Date = date;
+        //    Name = name;
+        //    Exclusive = exclusive;
+        //    Status = status;
+        //}
+
+        //public Request()
+        //{
+        //    Id = 0;
+        //}
 
     }
 }

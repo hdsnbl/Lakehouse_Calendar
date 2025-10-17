@@ -4,6 +4,7 @@ namespace LakeHouseCalendarWebsite.Classes
 {
     public class CalendarItem
     {
+        public int Id { get; set; }
         public DateTime Date { get; set; }
         public string Name { get; set; }
         public bool? Exclusive { get; set; }

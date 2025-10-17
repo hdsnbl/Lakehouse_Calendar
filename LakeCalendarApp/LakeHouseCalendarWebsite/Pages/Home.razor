@@ -63,11 +63,12 @@
             _ => ""
         };
 
-        var apiItems = apiService.GetCalendarItems(monthStart, monthEnd);
+        //var apiItems = apiService.GetCalendarItems(monthStart, monthEnd);
+        var apiItems = ApiService.GetCalendarEvents(monthStart, monthEnd);
 
         foreach (var apiitem in apiItems)
         {
-            var item = calendar.Items.FirstOrDefault(n => n.Date == apiitem.Date);
+            var item = calendar.Items.FirstOrDefault(n => n.Date == apiitem.Date);          //Need to change so that duplicate dates can be shown
             if (item == null)
             {
                 calendar.Items.Add(apiitem);
@@ -81,12 +82,18 @@
     }
 }
 
+<div style="display: flex; align-items: center; justify-content: space-between;">
+    <button @onclick="() => { monthsAway--; CreateMonth(); }">Previous Month</button>
+    <h2>@monthName, @year</h2>
+    <button @onclick="() => { monthsAway++; CreateMonth(); }">Next Month</button>
+</div>
 
-<button @onclick="() => { monthsAway--; CreateMonth(); }">Previous Month</button>
-<h1>@monthName, @year</h1>
-<button @onclick="() => { monthsAway++; CreateMonth(); }">Next Month</button>
-
-<section>
+<section style="
+    display: grid;
+    grid-template-columns: repeat(7, 1fr); /* 7 columns for a week */
+    gap: 0; /* removes space between cells */
+    width: 100%;
+">
     @for (int i = 0; i < numDummyColumn; i++)
     {
         <div></div>
