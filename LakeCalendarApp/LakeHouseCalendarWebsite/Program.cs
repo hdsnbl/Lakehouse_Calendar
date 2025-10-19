@@ -1,6 +1,7 @@
 using LakeHouseCalendarWebsite.Classes;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using MudBlazor.Services;
 using (var connection = new Npgsql.NpgsqlConnection("Host=localhost;Database=Lakehouse_Calendar;Username=postgres;Password=100901huds"))
 {                                                                                             
     connection.Open();
@@ -30,6 +31,9 @@ using (var connection = new Npgsql.NpgsqlConnection("Host=localhost;Database=Lak
 }
 
 
+
+
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -45,7 +49,7 @@ builder.Services.AddHttpClient();
 
 //builder.Services.AddSingleton<Request>();
 //builder.Services.AddSingleton<CalendarItem>();
-
+builder.Services.AddMudServices();
 
 var app = builder.Build();
 

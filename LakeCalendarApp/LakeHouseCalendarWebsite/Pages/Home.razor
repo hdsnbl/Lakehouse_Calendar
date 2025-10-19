@@ -79,9 +79,11 @@
 }
 
 <div style="display: flex; align-items: center; justify-content: space-between;">
-    <button @onclick="() => { monthsAway--; CreateMonth(); }" style="background-color: white; width: 176px">Previous Month</button>
+    @* <button @onclick="() => { monthsAway--; CreateMonth(); }" style="background-color: white; width: 176px; border-style: groove;">Previous Month</button> *@
+    <MudButton Variant="Variant.Filled" Size="Size.Medium" Color="Color.Dark" style="width: 14.5%" @onclick="() => { monthsAway--; CreateMonth(); }">Previous Month</MudButton>               @* need to change *@
     <h2>@monthName, @year</h2>
-    <button @onclick="() => { monthsAway++; CreateMonth(); }" style="background-color: white; width: 176px">Next Month</button>
+    @* <button @onclick="() => { monthsAway++; CreateMonth(); }" style="background-color: white; width: 176px">Next Month</button> *@
+    <MudButton Variant="Variant.Filled" Size="Size.Medium" Color="Color.Dark" style="width: 14.5%" @onclick="() => { monthsAway++; CreateMonth(); }">Next Month</MudButton>
 </div>
 
 <section style="
