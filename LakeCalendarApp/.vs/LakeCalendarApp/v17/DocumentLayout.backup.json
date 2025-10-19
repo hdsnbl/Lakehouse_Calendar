@@ -3,6 +3,18 @@
   "WorkspaceRootPath": "C:\\Users\\baile\\source\\repos\\Lakehouse_Calendar\\LakeCalendarApp\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\baile\\source\\repos\\Lakehouse_Calendar\\LakeCalendarApp\\.gitignore||{3B902123-F8A7-4915-9F01-361F908088D0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:.gitignore||{3B902123-F8A7-4915-9F01-361F908088D0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B2E7A2A2-D92C-4E00-81B8-0102D906090A}|LakeHouseCalendarWebsite\\LakeHouseCalendarWebsite.csproj|c:\\users\\baile\\source\\repos\\lakehouse_calendar\\lakecalendarapp\\lakehousecalendarwebsite\\pages\\home.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{B2E7A2A2-D92C-4E00-81B8-0102D906090A}|LakeHouseCalendarWebsite\\LakeHouseCalendarWebsite.csproj|solutionrelative:lakehousecalendarwebsite\\pages\\home.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B2E7A2A2-D92C-4E00-81B8-0102D906090A}|LakeHouseCalendarWebsite\\LakeHouseCalendarWebsite.csproj|c:\\users\\baile\\source\\repos\\lakehouse_calendar\\lakecalendarapp\\lakehousecalendarwebsite\\app.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{B2E7A2A2-D92C-4E00-81B8-0102D906090A}|LakeHouseCalendarWebsite\\LakeHouseCalendarWebsite.csproj|solutionrelative:lakehousecalendarwebsite\\app.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{B2E7A2A2-D92C-4E00-81B8-0102D906090A}|LakeHouseCalendarWebsite\\LakeHouseCalendarWebsite.csproj|c:\\users\\baile\\source\\repos\\lakehouse_calendar\\lakecalendarapp\\lakehousecalendarwebsite\\shared\\mainlayout.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{B2E7A2A2-D92C-4E00-81B8-0102D906090A}|LakeHouseCalendarWebsite\\LakeHouseCalendarWebsite.csproj|solutionrelative:lakehousecalendarwebsite\\shared\\mainlayout.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
@@ -11,16 +23,8 @@
       "RelativeMoniker": "D:0:0:{B2E7A2A2-D92C-4E00-81B8-0102D906090A}|LakeHouseCalendarWebsite\\LakeHouseCalendarWebsite.csproj|solutionrelative:lakehousecalendarwebsite\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{B2E7A2A2-D92C-4E00-81B8-0102D906090A}|LakeHouseCalendarWebsite\\LakeHouseCalendarWebsite.csproj|c:\\users\\baile\\source\\repos\\lakehouse_calendar\\lakecalendarapp\\lakehousecalendarwebsite\\app.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{B2E7A2A2-D92C-4E00-81B8-0102D906090A}|LakeHouseCalendarWebsite\\LakeHouseCalendarWebsite.csproj|solutionrelative:lakehousecalendarwebsite\\app.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{B2E7A2A2-D92C-4E00-81B8-0102D906090A}|LakeHouseCalendarWebsite\\LakeHouseCalendarWebsite.csproj|c:\\users\\baile\\source\\repos\\lakehouse_calendar\\lakecalendarapp\\lakehousecalendarwebsite\\_imports.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{B2E7A2A2-D92C-4E00-81B8-0102D906090A}|LakeHouseCalendarWebsite\\LakeHouseCalendarWebsite.csproj|solutionrelative:lakehousecalendarwebsite\\_imports.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B2E7A2A2-D92C-4E00-81B8-0102D906090A}|LakeHouseCalendarWebsite\\LakeHouseCalendarWebsite.csproj|c:\\users\\baile\\source\\repos\\lakehouse_calendar\\lakecalendarapp\\lakehousecalendarwebsite\\pages\\home.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{B2E7A2A2-D92C-4E00-81B8-0102D906090A}|LakeHouseCalendarWebsite\\LakeHouseCalendarWebsite.csproj|solutionrelative:lakehousecalendarwebsite\\pages\\home.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{B2E7A2A2-D92C-4E00-81B8-0102D906090A}|LakeHouseCalendarWebsite\\LakeHouseCalendarWebsite.csproj|c:\\users\\baile\\source\\repos\\lakehouse_calendar\\lakecalendarapp\\lakehousecalendarwebsite\\classes\\calendaritem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -59,6 +63,19 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": ".gitignore",
+              "DocumentMoniker": "C:\\Users\\baile\\source\\repos\\Lakehouse_Calendar\\LakeCalendarApp\\.gitignore",
+              "RelativeDocumentMoniker": ".gitignore",
+              "ToolTip": "C:\\Users\\baile\\source\\repos\\Lakehouse_Calendar\\LakeCalendarApp\\.gitignore",
+              "RelativeToolTip": ".gitignore",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2025-10-19T21:33:37.311Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "MainLayout.razor",
               "DocumentMoniker": "C:\\Users\\baile\\source\\repos\\Lakehouse_Calendar\\LakeCalendarApp\\LakeHouseCalendarWebsite\\Shared\\MainLayout.razor",
               "RelativeDocumentMoniker": "LakeHouseCalendarWebsite\\Shared\\MainLayout.razor",
@@ -84,7 +101,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 5,
               "Title": "_Imports.razor",
               "DocumentMoniker": "C:\\Users\\baile\\source\\repos\\Lakehouse_Calendar\\LakeCalendarApp\\LakeHouseCalendarWebsite\\_Imports.razor",
               "RelativeDocumentMoniker": "LakeHouseCalendarWebsite\\_Imports.razor",
@@ -97,7 +114,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 4,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\baile\\source\\repos\\Lakehouse_Calendar\\LakeCalendarApp\\LakeHouseCalendarWebsite\\Program.cs",
               "RelativeDocumentMoniker": "LakeHouseCalendarWebsite\\Program.cs",
@@ -110,20 +127,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 1,
               "Title": "Home.razor",
               "DocumentMoniker": "C:\\Users\\baile\\source\\repos\\Lakehouse_Calendar\\LakeCalendarApp\\LakeHouseCalendarWebsite\\Pages\\Home.razor",
               "RelativeDocumentMoniker": "LakeHouseCalendarWebsite\\Pages\\Home.razor",
               "ToolTip": "C:\\Users\\baile\\source\\repos\\Lakehouse_Calendar\\LakeCalendarApp\\LakeHouseCalendarWebsite\\Pages\\Home.razor",
               "RelativeToolTip": "LakeHouseCalendarWebsite\\Pages\\Home.razor",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAD8AAAAAAAAAAAAAAFUAAACBAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2025-10-10T04:52:34.686Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 10,
               "Title": "ApiService.cs",
               "DocumentMoniker": "C:\\Users\\baile\\source\\repos\\Lakehouse_Calendar\\LakeCalendarApp\\LakeHouseCalendarWebsite\\Services\\ApiService.cs",
               "RelativeDocumentMoniker": "LakeHouseCalendarWebsite\\Services\\ApiService.cs",
@@ -136,7 +153,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 9,
               "Title": "Requests.razor",
               "DocumentMoniker": "C:\\Users\\baile\\source\\repos\\Lakehouse_Calendar\\LakeCalendarApp\\LakeHouseCalendarWebsite\\Pages\\Requests.razor",
               "RelativeDocumentMoniker": "LakeHouseCalendarWebsite\\Pages\\Requests.razor",
@@ -149,7 +166,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 8,
               "Title": "MakeRequest.razor",
               "DocumentMoniker": "C:\\Users\\baile\\source\\repos\\Lakehouse_Calendar\\LakeCalendarApp\\LakeHouseCalendarWebsite\\Pages\\MakeRequest.razor",
               "RelativeDocumentMoniker": "LakeHouseCalendarWebsite\\Pages\\MakeRequest.razor",
@@ -162,7 +179,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 6,
               "Title": "CalendarItem.cs",
               "DocumentMoniker": "C:\\Users\\baile\\source\\repos\\Lakehouse_Calendar\\LakeCalendarApp\\LakeHouseCalendarWebsite\\Classes\\CalendarItem.cs",
               "RelativeDocumentMoniker": "LakeHouseCalendarWebsite\\Classes\\CalendarItem.cs",
@@ -175,7 +192,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 11,
               "Title": "Calendar.cs",
               "DocumentMoniker": "C:\\Users\\baile\\source\\repos\\Lakehouse_Calendar\\LakeCalendarApp\\LakeHouseCalendarWebsite\\Classes\\Calendar.cs",
               "RelativeDocumentMoniker": "LakeHouseCalendarWebsite\\Classes\\Calendar.cs",
@@ -188,7 +205,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 7,
               "Title": "Request.cs",
               "DocumentMoniker": "C:\\Users\\baile\\source\\repos\\Lakehouse_Calendar\\LakeCalendarApp\\LakeHouseCalendarWebsite\\Classes\\Request.cs",
               "RelativeDocumentMoniker": "LakeHouseCalendarWebsite\\Classes\\Request.cs",
