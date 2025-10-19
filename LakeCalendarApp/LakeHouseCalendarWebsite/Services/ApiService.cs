@@ -80,7 +80,7 @@ namespace LakeHouseCalendarWebsite.Services
 
         //---------------------------DATABASE PORTION-------------------------------------------------------------
 
-        private const string ConnectionString = "Host=localhost;Database=Lakehouse_Calendar;Username=postgres;Password=100901huds";
+        private const string ConnectionString = "Host=localhost;Database=Lakehouse_Calendar;Username=postgres;Password=1234";
         public static void AddCalendarEvent(string name, bool? exclusive, bool? approved, DateTime date)
         {
             using (var connection = new NpgsqlConnection(ConnectionString))

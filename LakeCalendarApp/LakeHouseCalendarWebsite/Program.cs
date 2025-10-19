@@ -2,7 +2,7 @@ using LakeHouseCalendarWebsite.Classes;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using MudBlazor.Services;
-using (var connection = new Npgsql.NpgsqlConnection("Host=localhost;Database=Lakehouse_Calendar;Username=postgres;Password=100901huds"))
+using (var connection = new Npgsql.NpgsqlConnection("Host=localhost;Database=Lakehouse_Calendar;Username=postgres;Password=1234"))
 {                                                                                             
     connection.Open();
 
