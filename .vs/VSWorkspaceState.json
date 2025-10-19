@@ -1,6 +1,10 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\LakeCalendarApp",
+    "\\LakeCalendarApp\\LakeHouseCalendarWebsite",
+    "\\LakeCalendarApp\\LakeHouseCalendarWebsite\\Pages"
   ],
+  "SelectedNode": "\\LakeCalendarApp\\LakeHouseCalendarWebsite\\Pages\\MakeRequest.razor",
   "PreviewInSolutionExplorer": false
 }

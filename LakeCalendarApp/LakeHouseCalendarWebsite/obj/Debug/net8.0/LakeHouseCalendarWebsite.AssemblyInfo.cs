@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("LakeHouseCalendarWebsite")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3406772827cf98a5923f8074b6cceb1ad9f0620f")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+09cb7a9f085a24e2e8b8ab6dfdc931d8de2fcfc5")]
 [assembly: System.Reflection.AssemblyProductAttribute("LakeHouseCalendarWebsite")]
 [assembly: System.Reflection.AssemblyTitleAttribute("LakeHouseCalendarWebsite")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

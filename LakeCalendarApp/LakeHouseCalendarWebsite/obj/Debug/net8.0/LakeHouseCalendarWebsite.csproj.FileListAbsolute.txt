@@ -97,3 +97,12 @@ C:\Users\baile\source\repos\Lakehouse_Calendar\LakeCalendarApp\LakeHouseCalendar
 C:\Users\baile\source\repos\Lakehouse_Calendar\LakeCalendarApp\LakeHouseCalendarWebsite\obj\Debug\net8.0\LakeHouseCalendarWebsite.pdb
 C:\Users\baile\source\repos\Lakehouse_Calendar\LakeCalendarApp\LakeHouseCalendarWebsite\obj\Debug\net8.0\LakeHouseCalendarWebsite.genruntimeconfig.cache
 C:\Users\baile\source\repos\Lakehouse_Calendar\LakeCalendarApp\LakeHouseCalendarWebsite\obj\Debug\net8.0\ref\LakeHouseCalendarWebsite.dll
+C:\Users\baile\source\repos\Lakehouse_Calendar\LakeCalendarApp\LakeHouseCalendarWebsite\bin\Debug\net8.0\Microsoft.AspNetCore.Authorization.dll
+C:\Users\baile\source\repos\Lakehouse_Calendar\LakeCalendarApp\LakeHouseCalendarWebsite\bin\Debug\net8.0\Microsoft.AspNetCore.Components.dll
+C:\Users\baile\source\repos\Lakehouse_Calendar\LakeCalendarApp\LakeHouseCalendarWebsite\bin\Debug\net8.0\Microsoft.AspNetCore.Components.Forms.dll
+C:\Users\baile\source\repos\Lakehouse_Calendar\LakeCalendarApp\LakeHouseCalendarWebsite\bin\Debug\net8.0\Microsoft.AspNetCore.Components.Web.dll
+C:\Users\baile\source\repos\Lakehouse_Calendar\LakeCalendarApp\LakeHouseCalendarWebsite\bin\Debug\net8.0\Microsoft.AspNetCore.Metadata.dll
+C:\Users\baile\source\repos\Lakehouse_Calendar\LakeCalendarApp\LakeHouseCalendarWebsite\bin\Debug\net8.0\Microsoft.Extensions.Localization.dll
+C:\Users\baile\source\repos\Lakehouse_Calendar\LakeCalendarApp\LakeHouseCalendarWebsite\bin\Debug\net8.0\Microsoft.Extensions.Localization.Abstractions.dll
+C:\Users\baile\source\repos\Lakehouse_Calendar\LakeCalendarApp\LakeHouseCalendarWebsite\bin\Debug\net8.0\Microsoft.JSInterop.dll
+C:\Users\baile\source\repos\Lakehouse_Calendar\LakeCalendarApp\LakeHouseCalendarWebsite\bin\Debug\net8.0\MudBlazor.dll

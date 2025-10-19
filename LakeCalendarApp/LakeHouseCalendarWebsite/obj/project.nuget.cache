@@ -1,9 +1,15 @@
 {
   "version": 2,
-  "dgSpecHash": "szIZzPUm1SI=",
+  "dgSpecHash": "bsHtAErfEtg=",
   "success": true,
   "projectFilePath": "C:\\Users\\baile\\source\\repos\\Lakehouse_Calendar\\LakeCalendarApp\\LakeHouseCalendarWebsite\\LakeHouseCalendarWebsite.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\baile\\.nuget\\packages\\microsoft.aspnetcore.authorization\\8.0.12\\microsoft.aspnetcore.authorization.8.0.12.nupkg.sha512",
+    "C:\\Users\\baile\\.nuget\\packages\\microsoft.aspnetcore.components\\8.0.12\\microsoft.aspnetcore.components.8.0.12.nupkg.sha512",
+    "C:\\Users\\baile\\.nuget\\packages\\microsoft.aspnetcore.components.analyzers\\8.0.12\\microsoft.aspnetcore.components.analyzers.8.0.12.nupkg.sha512",
+    "C:\\Users\\baile\\.nuget\\packages\\microsoft.aspnetcore.components.forms\\8.0.12\\microsoft.aspnetcore.components.forms.8.0.12.nupkg.sha512",
+    "C:\\Users\\baile\\.nuget\\packages\\microsoft.aspnetcore.components.web\\8.0.12\\microsoft.aspnetcore.components.web.8.0.12.nupkg.sha512",
+    "C:\\Users\\baile\\.nuget\\packages\\microsoft.aspnetcore.metadata\\8.0.12\\microsoft.aspnetcore.metadata.8.0.12.nupkg.sha512",
     "C:\\Users\\baile\\.nuget\\packages\\microsoft.entityframeworkcore\\9.0.1\\microsoft.entityframeworkcore.9.0.1.nupkg.sha512",
     "C:\\Users\\baile\\.nuget\\packages\\microsoft.entityframeworkcore.abstractions\\9.0.1\\microsoft.entityframeworkcore.abstractions.9.0.1.nupkg.sha512",
     "C:\\Users\\baile\\.nuget\\packages\\microsoft.entityframeworkcore.analyzers\\9.0.1\\microsoft.entityframeworkcore.analyzers.9.0.1.nupkg.sha512",
@@ -13,14 +19,19 @@
     "C:\\Users\\baile\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\9.0.1\\microsoft.extensions.configuration.abstractions.9.0.1.nupkg.sha512",
     "C:\\Users\\baile\\.nuget\\packages\\microsoft.extensions.dependencyinjection\\9.0.1\\microsoft.extensions.dependencyinjection.9.0.1.nupkg.sha512",
     "C:\\Users\\baile\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\9.0.1\\microsoft.extensions.dependencyinjection.abstractions.9.0.1.nupkg.sha512",
+    "C:\\Users\\baile\\.nuget\\packages\\microsoft.extensions.localization\\8.0.12\\microsoft.extensions.localization.8.0.12.nupkg.sha512",
+    "C:\\Users\\baile\\.nuget\\packages\\microsoft.extensions.localization.abstractions\\8.0.12\\microsoft.extensions.localization.abstractions.8.0.12.nupkg.sha512",
     "C:\\Users\\baile\\.nuget\\packages\\microsoft.extensions.logging\\9.0.1\\microsoft.extensions.logging.9.0.1.nupkg.sha512",
     "C:\\Users\\baile\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\9.0.1\\microsoft.extensions.logging.abstractions.9.0.1.nupkg.sha512",
     "C:\\Users\\baile\\.nuget\\packages\\microsoft.extensions.options\\9.0.1\\microsoft.extensions.options.9.0.1.nupkg.sha512",
     "C:\\Users\\baile\\.nuget\\packages\\microsoft.extensions.primitives\\9.0.1\\microsoft.extensions.primitives.9.0.1.nupkg.sha512",
+    "C:\\Users\\baile\\.nuget\\packages\\microsoft.jsinterop\\8.0.12\\microsoft.jsinterop.8.0.12.nupkg.sha512",
+    "C:\\Users\\baile\\.nuget\\packages\\mudblazor\\8.13.0\\mudblazor.8.13.0.nupkg.sha512",
     "C:\\Users\\baile\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512",
     "C:\\Users\\baile\\.nuget\\packages\\npgsql\\9.0.4\\npgsql.9.0.4.nupkg.sha512",
     "C:\\Users\\baile\\.nuget\\packages\\npgsql.entityframeworkcore.postgresql\\9.0.4\\npgsql.entityframeworkcore.postgresql.9.0.4.nupkg.sha512",
-    "C:\\Users\\baile\\.nuget\\packages\\system.diagnostics.diagnosticsource\\9.0.1\\system.diagnostics.diagnosticsource.9.0.1.nupkg.sha512"
+    "C:\\Users\\baile\\.nuget\\packages\\system.diagnostics.diagnosticsource\\9.0.1\\system.diagnostics.diagnosticsource.9.0.1.nupkg.sha512",
+    "C:\\Users\\baile\\.nuget\\packages\\system.io.pipelines\\8.0.0\\system.io.pipelines.8.0.0.nupkg.sha512"
   ],
   "logs": []
 }
