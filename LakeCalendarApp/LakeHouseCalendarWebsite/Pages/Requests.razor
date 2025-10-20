@@ -6,12 +6,18 @@
 <PageTitle>Requests</PageTitle>
 
 <h1 style="text-align: center; font-weight: bold; text-decoration: underline;">Requests</h1>
+<MudButtonGroup Color="Color.Dark" Variant="Variant.Filled" Style="display:flex; justify-content: center; background-color: gray">
+    <MudButton @onclick="() => ChangeDisplay(null)">Pending</MudButton>
+    <MudButton @onclick="() => ChangeDisplay(true)">Approved</MudButton>
+    <MudButton @onclick="() => ChangeDisplay(false)">Disapproved</MudButton>
+</MudButtonGroup>
 
 <section>
     @if (realRequests.Count != 0)
     {
         @foreach (var currentItem in realRequests)
         {
+            
             <div style="
                     width: 80%;
                     max-width: 600px;
@@ -29,29 +35,28 @@
                         padding: 10px;
                         border-radius: 8px;
                     ">
-                    Family: @currentItem.Name
+                    Family: @currentItem.Name <br>
                     Approved: @(currentItem.Approved == true ? "Approved" : currentItem.Approved == false ? "Disapproved" : "Pending")
                 </h2>
-
-                <div style="display: flex; flex-direction: column; gap: 10px;">
-                    @foreach (var item in currentItem.FullRequest)
-                    {
-                        <div style="
-                                border: 1px solid #bbb;
-                                border-radius: 8px;
-                                padding: 10px;
-                                background-color: #fff;
-                                text-align: left;
-                            ">
-                            <p><strong>Date:</strong> @item.Date.ToString("MMM dd, yyyy")</p>
-                            <p><strong>Exclusive:</strong> @(item.Exclusive == true ? "Yes" : "No")</p>
-                            <p>
-                                <strong>Approved:</strong>
-                                @(item.Approved == true ? "Approved" : item.Approved == false ? "Disapproved" : "Pending")
-                            </p>
-                        </div>
-                    }
-                </div>
+                <MudPaper>
+                    <MudList T="string">
+                        @foreach (var item in currentItem.FullRequest)
+                        {
+                            <MudListItem>
+                                <div style="
+                                                border: 1px solid #bbb;
+                                                border-radius: 8px;
+                                                padding: 10px;
+                                                background-color: #fff;
+                                                text-align: center;
+                                                /* Make an onclick() function to add a modal that displays the information of the date when clicked */
+                                            ">
+                                    <p><strong>Date:</strong> @item.Date.ToString("MMM dd, yyyy"), <strong>Exclusive:</strong> @(item.Exclusive == true ? "Yes" : "No")</p>
+                                </div>
+                            </MudListItem>
+                        }
+                    </MudList>
+                </MudPaper>
 
                 <div style="
                         display: flex;
@@ -59,29 +64,8 @@
                         gap: 15px;
                         margin-top: 20px;
                     ">
-                    <button class="button" style="
-                                                padding: 8px 16px;
-                                                background-color: #4CAF50;
-                                                color: white;
-                                                border: none;
-                                                border-radius: 6px;
-                                                cursor: pointer;
-                                            "
-                            @onclick="() => Approve(currentItem)">
-                        Approve All
-                    </button>
-
-                    <button class="button" style="
-                                                padding: 8px 16px;
-                                                background-color: #e74c3c;
-                                                color: white;
-                                                border: none;
-                                                border-radius: 6px;
-                                                cursor: pointer;
-                                            "
-                            @onclick="() => Disapprove(currentItem)">
-                        Disapprove All
-                    </button>
+                    <MudButton Variant="Variant.Filled" Color="Color.Tertiary" @onclick="() => Approve(currentItem)">Approve All</MudButton>
+                    <MudButton Variant="Variant.Filled" Color="Color.Secondary" @onclick="() => Disapprove(currentItem)">Disapprove All</MudButton>
                 </div>
             </div>
         }
@@ -100,6 +84,7 @@
     CalendarItem request = new CalendarItem();
     bool showApproveModal = false;
     bool showDisapproveModal = false;
+    //bool? displaying = null;
 
     protected override void OnInitialized()
     {
@@ -108,6 +93,13 @@
         // realRequests = events                                //Only shows the requests that haven't been approved or disapproved
         //     .Where(item => item.Approved == null)
         //     .ToList();
+    }
+
+    void ChangeDisplay(bool? display)
+    {
+        realRequests = ApiService.GetAllRequests()                                //Only shows the requests that haven't been approved or disapproved
+            .Where(item => item.Approved == display)
+            .ToList();
     }
 
     void Approve(Request request)
