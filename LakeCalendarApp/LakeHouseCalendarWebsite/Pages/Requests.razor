@@ -5,19 +5,84 @@
 
 <PageTitle>Requests</PageTitle>
 
-<h1>Requests:</h1>
+<h1 style="text-align: center; font-weight: bold; text-decoration: underline;">Requests</h1>
 
 <section>
-    @if (requests.Count != 0)
+    @if (realRequests.Count != 0)
     {
-        @foreach (var currentItem in requests)
+        @foreach (var currentItem in realRequests)
         {
-            <div style="display: block; width: 80%; max-width: 500px; border: 2px solid #333; padding: 10px; background-color: #f5f5f5; box-shadow: 0 4px 8px rgba(0,0,0,0.2); text-align: center;">
-                <p>Date: @currentItem.Date</p>
-                <p>Family: @currentItem.Name</p>
-                <p>Exclusive: @(currentItem.Exclusive == true ? "Yes" : "No")</p>
-                <button class="button" id="approve" @onclick="() => Approve(currentItem)">Approve</button>
-                <button class="button" id="disapprove" @onclick="() => Disapprove(currentItem)">Disapprove</button>
+            <div style="
+                    width: 80%;
+                    max-width: 600px;
+                    margin: 20px auto;
+                    border: 2px solid #333;
+                    border-radius: 12px;
+                    background-color: #fafafa;
+                    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+                    padding: 15px;
+                ">
+                <h2 style="
+                        margin-bottom: 15px;
+                        background-color: #333;
+                        color: white;
+                        padding: 10px;
+                        border-radius: 8px;
+                    ">
+                    Family: @currentItem.Name
+                    Approved: @(currentItem.Approved == true ? "Approved" : currentItem.Approved == false ? "Disapproved" : "Pending")
+                </h2>
+
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    @foreach (var item in currentItem.FullRequest)
+                    {
+                        <div style="
+                                border: 1px solid #bbb;
+                                border-radius: 8px;
+                                padding: 10px;
+                                background-color: #fff;
+                                text-align: left;
+                            ">
+                            <p><strong>Date:</strong> @item.Date.ToString("MMM dd, yyyy")</p>
+                            <p><strong>Exclusive:</strong> @(item.Exclusive == true ? "Yes" : "No")</p>
+                            <p>
+                                <strong>Approved:</strong>
+                                @(item.Approved == true ? "Approved" : item.Approved == false ? "Disapproved" : "Pending")
+                            </p>
+                        </div>
+                    }
+                </div>
+
+                <div style="
+                        display: flex;
+                        justify-content: center;
+                        gap: 15px;
+                        margin-top: 20px;
+                    ">
+                    <button class="button" style="
+                                                padding: 8px 16px;
+                                                background-color: #4CAF50;
+                                                color: white;
+                                                border: none;
+                                                border-radius: 6px;
+                                                cursor: pointer;
+                                            "
+                            @onclick="() => Approve(currentItem)">
+                        Approve All
+                    </button>
+
+                    <button class="button" style="
+                                                padding: 8px 16px;
+                                                background-color: #e74c3c;
+                                                color: white;
+                                                border: none;
+                                                border-radius: 6px;
+                                                cursor: pointer;
+                                            "
+                            @onclick="() => Disapprove(currentItem)">
+                        Disapprove All
+                    </button>
+                </div>
             </div>
         }
     }
@@ -27,62 +92,59 @@
     }
 </section>
 
+
 @code {
     List<int> Ids = new List<int>();
     List<CalendarItem> requests = new List<CalendarItem>();
+    List<Request> realRequests = new List<Request>();
     CalendarItem request = new CalendarItem();
     bool showApproveModal = false;
     bool showDisapproveModal = false;
 
     protected override void OnInitialized()
     {
-        
-        var events = ApiService.GetAllCalendarEvents();
+        var events = ApiService.GetAllRequests();
+        realRequests = events;
+        // realRequests = events                                //Only shows the requests that haven't been approved or disapproved
+        //     .Where(item => item.Approved == null)
+        //     .ToList();
+    }
 
-        // Clear local calendar list and rebuild
-        calendar.Items.Clear();
+    void Approve(Request request)
+    {
+        if (request.FullRequest == null || request.FullRequest.Count == 0)
+            return;
 
-        foreach (var e in events)
+        foreach (var item in request.FullRequest)
         {
-            // var item = calendar.Items.FirstOrDefault(n => n.Date == e.Date);
-            // if (item == null)
-            // {
-            //     calendar.Items.Add(e);
-            // }
-
-            bool exists = calendar.Items.Any(n => n.Date == e.Date && n.Name == e.Name && n.Approved == e.Approved);
-            if (!exists)
-            {
-                calendar.Items.Add(e);
-            }
-            // calendar.Items = calendar.Items
-            //     .Where(item => item.Approved == null)
-            //     .ToList();
+            item.Approved = true;
+            ApiService.UpdateCalendarEvent(item);
         }
-        requests = calendar.Items
-                .Where(item => item.Approved == null)
-                .OrderBy(item => item.Date)
-                .ToList();
+        request.Approved = true;
+        ApiService.UpdateRequest(request);
+
+        // realRequests = ApiService.GetAllRequests()                                //Only shows the requests that haven't been approved or disapproved
+        //         .Where(item => item.Approved == null)
+        //         .ToList();
+    }
+    void Disapprove(Request request)
+    {
+        if (request.FullRequest == null || request.FullRequest.Count == 0)
+            return;
+
+        foreach (var item in request.FullRequest)
+        {
+            item.Approved = false;
+            ApiService.UpdateCalendarEvent(item);
+        }
+        request.Approved = false;
+        ApiService.UpdateRequest(request);
+
+        // realRequests = ApiService.GetAllRequests()                                //Only shows the requests that haven't been approved or disapproved
+        //         .Where(item => item.Approved == null)
+        //         .ToList();
     }
 
-    void Approve(CalendarItem item)
-    {
-        item.Approved = true;
-        ApiService.UpdateCalendarEvent(item);
-        
-        requests = calendar.Items
-                .Where(item => item.Approved == null)
-                .ToList();
-    }
-    void Disapprove(CalendarItem item)
-    {
-        item.Approved = false;
-        ApiService.UpdateCalendarEvent(item);
-
-        requests = calendar.Items
-                .Where(item => item.Approved == null)
-                .ToList();
-    }
     void OpenApproveModal(CalendarItem item)
     {
         request = item;
@@ -102,7 +164,7 @@
     }
 }
 
-@if (showApproveModal)
+@* @if (showApproveModal)
 {
     <div class="modal">
         <div class="modal-content">
@@ -126,4 +188,4 @@
             </div>
         </div>
     </div>
-}
+} *@

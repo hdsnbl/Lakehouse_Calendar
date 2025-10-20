@@ -9,9 +9,12 @@ namespace LakeHouseCalendarWebsite.Classes
         public string Name { get; set; }
         public bool? Exclusive { get; set; }
         public bool? Approved { get; set; }
+        public int Request_id { get; set; }
         public CalendarItem()
         {
             Approved = false;
+            Name = "";
+            Exclusive = null;
         }
 
         public CalendarItem(DateTime date, string name, bool? exclusive)

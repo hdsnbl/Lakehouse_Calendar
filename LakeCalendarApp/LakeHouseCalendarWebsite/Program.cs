@@ -7,20 +7,26 @@ using (var connection = new Npgsql.NpgsqlConnection("Host=localhost;Database=Lak
     connection.Open();
 
     string sql = @"
+        CREATE TABLE IF NOT EXISTS requests (
+            id SERIAL PRIMARY KEY,
+            name TEXT NOT NULL,
+            approved BOOL
+        );
+
         CREATE TABLE IF NOT EXISTS calendar (
             id SERIAL PRIMARY KEY,
             name TEXT NOT NULL,
             exclusive BOOL,
             approved BOOL,
-            date TIMESTAMP NOT NULL
+            date TIMESTAMP NOT NULL,
+            request_id INT NOT NULL,
+            FOREIGN KEY (request_id) REFERENCES requests(id)
         );
 
-        CREATE TABLE IF NOT EXISTS requests (
+        CREATE TABLE IF NOT EXISTS users (
             id SERIAL PRIMARY KEY,
-            name TEXT NOT NULL,
-            exclusive BOOL,
-            approved BOOL,
-            date TIMESTAMP NOT NULL
+            username TEXT NOT NULL,
+            password TEXT NOT NULL
         );
     ";
 

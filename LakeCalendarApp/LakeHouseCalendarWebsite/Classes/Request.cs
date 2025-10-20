@@ -12,11 +12,18 @@ namespace LakeHouseCalendarWebsite.Classes
         //public StatusType Status { get; set; }
 
         //public int Id { get; set; }
-
+        public int Id { get; set; }
+        public string Name { get; set; }
         public List<CalendarItem> FullRequest { get; set; } = new List<CalendarItem>();
+        public bool? Approved {  get; set; }
         public Request(CalendarItem item)
         {
             FullRequest.Add(item);
+            Name = item.Name;
+        }
+        public Request()
+        {
+            Name = "";
         }
 
         //public Request(int id, DateTime date, string name, bool? exclusive)

@@ -20,7 +20,7 @@
     string names = "";
 
     List<CalendarItem> monthlyItems = new List<CalendarItem>();
-    List<Day> daysOfMonth = new List<Day>();
+    List<Calendar> daysOfMonth = new List<Calendar>();
 
     protected override void OnInitialized()
     {
@@ -79,10 +79,8 @@
 }
 
 <div style="display: flex; align-items: center; justify-content: space-between;">
-    @* <button @onclick="() => { monthsAway--; CreateMonth(); }" style="background-color: white; width: 176px; border-style: groove;">Previous Month</button> *@
     <MudButton Variant="Variant.Filled" Size="Size.Medium" Color="Color.Dark" style="width: 14.5%" @onclick="() => { monthsAway--; CreateMonth(); }">Previous Month</MudButton>               @* need to change *@
     <h2>@monthName, @year</h2>
-    @* <button @onclick="() => { monthsAway++; CreateMonth(); }" style="background-color: white; width: 176px">Next Month</button> *@
     <MudButton Variant="Variant.Filled" Size="Size.Medium" Color="Color.Dark" style="width: 14.5%" @onclick="() => { monthsAway++; CreateMonth(); }">Next Month</MudButton>
 </div>
 
@@ -98,7 +96,7 @@
     }
     @for (int i = 1; i <= monthEnd.Day; i++)
     {
-        var day = new Day();
+        var day = new Calendar();
         CalendarItem? calendarItem = null;
         List<CalendarItem>? calendarItemsOnDate = null;
         @if (calendar.Items.Count != 0)
@@ -113,7 +111,8 @@
                 // Add all events to the day
                 foreach (var item in calendarItemsOnDate)
                 {
-                    day.calendarItems.Add(item);
+                    //day.calendarItems.Add(item);
+                    day.Items.Add(item);
                     monthlyItems.Add(item);
                 }
 
@@ -134,15 +133,24 @@
                 calendarItem = new CalendarItem();
             }
         }
-        daysOfMonth.Add(day);
-
-        <div style="@(calendarItem!.Exclusive == null ? "background-color: lightyellow;" : (calendarItem.Exclusive == true ? "background-color: indianred;" : "background-color: lightgreen;"))">
-            <h2>@i</h2>
-            @if (calendarItem != null)
-            {
-                <p>@calendarItem.Name</p>
-            }
-        </div>
+        @if (day.Items.Count == 0)
+        {
+            <div style="background-color: lightyellow;">
+                <h2>@i</h2>
+            </div>
+        }
+        else
+        {
+            daysOfMonth.Add(day);
+            <div style="@(calendarItem!.Exclusive == null ? "background-color: lightyellow;" : (calendarItem.Exclusive == true ? "background-color: indianred;" : "background-color: lightgreen;"))">
+                <h2>@i</h2>
+                @if (calendarItem != null)
+                {
+                    <p>@calendarItem.Name</p>
+                }
+            </div>
+        }
+        
     }
 
 </section>

@@ -81,16 +81,17 @@ namespace LakeHouseCalendarWebsite.Services
         //---------------------------DATABASE PORTION-------------------------------------------------------------
 
         private const string ConnectionString = "Host=localhost;Database=Lakehouse_Calendar;Username=postgres;Password=1234";
-        public static void AddCalendarEvent(string name, bool? exclusive, bool? approved, DateTime date)
+        public static CalendarItem AddAndGetCalendarEvent(string name, bool? exclusive, bool? approved, DateTime date, int request_id)
         {
             using (var connection = new NpgsqlConnection(ConnectionString))
             {
                 connection.Open();
 
                 string sql = @"
-                INSERT INTO calendar (name, exclusive, approved, date)
-                VALUES (@name, @exclusive, @approved, @date);
-            ";
+                    INSERT INTO calendar (name, exclusive, approved, date, request_id)
+                    VALUES (@name, @exclusive, @approved, @date, @request_id)
+                    RETURNING id, name, exclusive, approved, date, request_id;
+                ";
 
                 using (var command = new NpgsqlCommand(sql, connection))
                 {
@@ -98,67 +99,136 @@ namespace LakeHouseCalendarWebsite.Services
                     command.Parameters.AddWithValue("@exclusive", (object?)exclusive ?? DBNull.Value);
                     command.Parameters.AddWithValue("@approved", (object?)approved ?? DBNull.Value);
                     command.Parameters.AddWithValue("@date", date);
+                    command.Parameters.AddWithValue("@request_id", request_id);
 
-                    command.ExecuteNonQuery();
+                    using (var reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            return new CalendarItem
+                            {
+                                Id = reader.GetInt32(0),
+                                Name = reader.GetString(1),
+                                Exclusive = reader.IsDBNull(2) ? (bool?)null : reader.GetBoolean(2),
+                                Approved = reader.IsDBNull(3) ? (bool?)null : reader.GetBoolean(3),
+                                Date = reader.GetDateTime(4),
+                                Request_id = reader.GetInt32(5)
+                            };
+                        }
+                    }
                 }
             }
-
-            Console.WriteLine("Event added successfully!");
+            return null;
         }
-        public static void AddRequest(string name, bool? exclusive, bool? approved, DateTime date)
+        public static Request AddAndGetRequest(string name)
         {
             using (var connection = new NpgsqlConnection(ConnectionString))
             {
                 connection.Open();
 
                 string sql = @"
-                INSERT INTO requests (name, exclusive, approved, date)
-                VALUES (@name, @exclusive, @approved, @date);
-            ";
+                    INSERT INTO requests (name)
+                    VALUES (@name)
+                    RETURNING id, name;
+                ";
 
                 using (var command = new NpgsqlCommand(sql, connection))
                 {
                     command.Parameters.AddWithValue("@name", name);
-                    command.Parameters.AddWithValue("@exclusive", (object?)exclusive ?? DBNull.Value);
-                    command.Parameters.AddWithValue("@approved", (object?)approved ?? DBNull.Value);
-                    command.Parameters.AddWithValue("@date", date);
 
-                    command.ExecuteNonQuery();
+                    using (var reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            return new Request
+                            {
+                                Id = reader.GetInt32(0),
+                                Name = reader.GetString(1)
+                            };
+                        }
+                    }
                 }
             }
 
             Console.WriteLine("Event added successfully!");
+            return null;
         }
-        public static List<CalendarItem> GetAllRequests()
+        public static List<Request> GetAllRequests()
         {
-            var events = new List<CalendarItem>();
+            var requests = new List<Request>();
 
+            // Get all requests
             using (var connection = new NpgsqlConnection(ConnectionString))
             {
                 connection.Open();
-
-                string sql = "SELECT id, name, exclusive, approved, date FROM requests;";
-
+                string sql = "SELECT id, name, approved FROM requests";
                 using (var command = new NpgsqlCommand(sql, connection))
                 using (var reader = command.ExecuteReader())
                 {
                     while (reader.Read())
                     {
-                        events.Add(new CalendarItem
+                        requests.Add(new Request
                         {
-                            Id = reader.GetInt32(reader.GetOrdinal("id")),
-                            Name = reader.GetString(reader.GetOrdinal("name")),
-                            Exclusive = reader.GetBoolean(reader.GetOrdinal("exclusive")),
+                            Id = reader.GetInt32(0),
+                            Name = reader.GetString(1),
+                            FullRequest = new List<CalendarItem>(),
                             Approved = reader.IsDBNull(reader.GetOrdinal("approved"))
                                 ? null
-                                : reader.GetBoolean(reader.GetOrdinal("approved")),
-                            Date = reader.GetDateTime(reader.GetOrdinal("date"))
+                                : reader.GetBoolean(reader.GetOrdinal("approved"))
                         });
+                    }
+                }
+
+                // Get calendar items for each request
+                foreach (var req in requests)
+                {
+                    string calendarSql = "SELECT id, name, exclusive, approved, date, request_id FROM calendar WHERE request_id = @request_id";
+                    using (var calCmd = new NpgsqlCommand(calendarSql, connection))
+                    {
+                        calCmd.Parameters.AddWithValue("@request_id", req.Id);
+                        using (var calReader = calCmd.ExecuteReader())
+                        {
+                            while (calReader.Read())
+                            {
+                                req.FullRequest.Add(new CalendarItem
+                                {
+                                    Id = calReader.GetInt32(0),
+                                    Name = calReader.GetString(1),
+                                    Exclusive = calReader.IsDBNull(2) ? (bool?)null : calReader.GetBoolean(2),
+                                    Approved = calReader.IsDBNull(3) ? (bool?)null : calReader.GetBoolean(3),
+                                    Date = calReader.GetDateTime(4),
+                                    Request_id = calReader.GetInt32(5)
+                                });
+                            }
+                        }
                     }
                 }
             }
 
-            return events;
+            return requests;
+        }
+        public static void UpdateRequest(Request request)
+        {
+            using (var connection = new NpgsqlConnection(ConnectionString))
+            {
+                connection.Open();
+
+                string sql = @"
+                    UPDATE requests
+                    SET name = @name,
+                    approved = @approved
+                    WHERE id = @id;
+                ";
+
+                using (var command = new NpgsqlCommand(sql, connection))
+                {
+                    command.Parameters.AddWithValue("@id", request.Id);
+                    command.Parameters.AddWithValue("@name", request.Name);
+                    command.Parameters.AddWithValue("@approved", (object?)request.Approved ?? DBNull.Value);
+
+                    command.ExecuteNonQuery();
+                }
+            }
         }
         public static List<CalendarItem> GetCalendarEvents(DateTime dateFrom, DateTime dateTo)
         {

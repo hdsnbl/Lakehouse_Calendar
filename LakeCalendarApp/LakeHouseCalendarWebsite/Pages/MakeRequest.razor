@@ -101,28 +101,31 @@
 
         for (DateTime date = start.Date; date <= end.Date; date = date.AddDays(1))
         {   
+
+            if (start.Date == date)
+            {
+                request = ApiService.AddAndGetRequest(name: family);         //Creates a request item in requests database, but only once so there are no unnecessary request items
+            }
             var calendarItem = new CalendarItem();
 
             calendarItem.Date = date;
             calendarItem.Name = family;
             calendarItem.Exclusive = exclusive;
             calendarItem.Approved = null;
+            calendarItem.Request_id = request.Id;
 
             calendar.Items.Add(calendarItem);
-            ApiService.AddCalendarEvent(
+            
+            calendarItem = ApiService.AddAndGetCalendarEvent(
                 name: family,
                 exclusive: exclusive,
                 approved: approved,
-                date: date
+                date: date,
+                request_id: request.Id
             );
+            request.FullRequest.Add(calendarItem);
 
-            if (start.Date == date)                         //  Beginnings of trying to make Requests that hold multiple CalendarItems to display in requests page
-            {
-                request = new Request(calendarItem);
-            }else if (start.Date != date)
-            {
-                request.FullRequest.Add(calendarItem);
-            }
+            
         }
 
         NavigationManager.NavigateTo("/Requests");
