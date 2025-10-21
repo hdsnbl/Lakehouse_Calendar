@@ -15,13 +15,11 @@
     </MudToggleGroup>
 </MudStack>
 
-
 <section>
     @if (realRequests.Count != 0)
     {
         @foreach (var currentItem in realRequests)
         {
-            
             <div style="
                     width: 80%;
                     max-width: 600px;
@@ -61,16 +59,30 @@
                         }
                     </MudList>
                 </MudPaper>
-
                 <div style="
                         display: flex;
                         justify-content: center;
                         gap: 15px;
                         margin-top: 20px;
                     ">
-                    <MudButton Variant="Variant.Filled" Color="Color.Tertiary" @onclick="() => Approve(currentItem)">Approve All</MudButton>
-                    <MudButton Variant="Variant.Filled" Color="Color.Secondary" @onclick="() => Disapprove(currentItem)">Disapprove All</MudButton>
+                    <MudButton Variant="Variant.Filled" Color="Color.Tertiary" @onclick="() => ShowModal(currentItem, true)">Approve All</MudButton>
+                    <MudButton Variant="Variant.Filled" Color="Color.Secondary" @onclick="() => ShowModal(currentItem, false)">Disapprove All</MudButton>
                 </div>
+                <MudMessageBox @ref="_mudMessageBox" Title="Are you sure?" CancelText="Cancel">
+                    <MessageContent>
+                        Are you sure?
+                    </MessageContent>
+                    <YesButton>
+                        @if (approve)
+                        {
+                            <MudButton @onclick="() => Approve(selectedRequest)" Variant="Variant.Filled" Color="Color.Error" StartIcon="@Icons.Material.Filled.Add">Approve</MudButton>
+                        }
+                        else
+                        {
+                            <MudButton @onclick="() => Disapprove(selectedRequest)" Variant="Variant.Filled" Color="Color.Error" StartIcon="@Icons.Material.Filled.Delete">Disapprove</MudButton>
+                        }
+                    </YesButton>
+                </MudMessageBox>
             </div>
         }
     }
@@ -89,12 +101,28 @@
     bool showApproveModal = false;
     bool showDisapproveModal = false;
     bool? displaying = null;
+    bool approve;
+    Request? selectedRequest;
+    private MudMessageBox _mudMessageBox;
 
     protected override void OnInitialized()
     {
         realRequests = ApiService.GetAllRequests()
             .Where(item => item.Approved == displaying)
             .ToList();
+    }
+
+    void ShowModal(Request request, bool isApprove)
+    {
+        selectedRequest = request;
+        approve = isApprove;
+        OnButtonClickedAsync();
+    }
+
+    private async Task OnButtonClickedAsync()
+    {
+        bool? result = await _mudMessageBox.ShowAsync();
+        StateHasChanged();
     }
 
     void ChangeDisplay(bool? value)
@@ -146,48 +174,4 @@
 
         StateHasChanged();
     }
-
-    void OpenApproveModal(CalendarItem item)
-    {
-        request = item;
-        showApproveModal = true;
-    }
-
-    void OpenDisapproveModal(CalendarItem item)
-    {
-        request = item;
-        showDisapproveModal = true;
-    }
-
-    void CloseModals()
-    {
-        showApproveModal = false;
-        showDisapproveModal = false;
-    }
 }
-
-@* @if (showApproveModal)
-{
-    <div class="modal">
-        <div class="modal-content">
-            <h3>Are you sure you want to APPROVE?</h3>
-            <div>
-                <button class="button" @onclick="() => { Approve(request); CloseModals(); }">Approve</button>
-                <button class="button" @onclick="CloseModals">Cancel</button>
-            </div>
-        </div>
-    </div>
-}
-
-@if (showDisapproveModal)
-{
-    <div class="modal">
-        <div class="modal-content">
-            <h3>Are you sure you want to DISAPPROVE?</h3>
-            <div>
-                <button class="button" @onclick="() => { Disapprove(request); CloseModals(); }">Disapprove</button>
-                <button class="button" @onclick="CloseModals">Cancel</button>
-            </div>
-        </div>
-    </div>
-} *@
