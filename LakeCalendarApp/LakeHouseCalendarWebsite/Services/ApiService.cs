@@ -19,78 +19,20 @@ namespace LakeHouseCalendarWebsite.Services
             client.DefaultRequestHeaders.Add("x-api-key", config["Key"]);
         }
 
-        public List<CalendarItem> GetCalendarItems(DateTime dateFrom, DateTime dateTo) 
-        {
-            var url = $"{config["ApiHost"]}CalendarItems?dateFrom={dateFrom}&dateTo={dateTo}";
-            var results = client.GetAsync(url).Result;
-            var calendarItems = new List<CalendarItem>();
-            if (results.IsSuccessStatusCode)
-            {
-                calendarItems = JsonConvert.DeserializeObject<List<CalendarItem>>(results.Content.ReadAsStringAsync().Result);
-            }
-
-
-
-            calendarItems.Add(new CalendarItem(new DateTime(2025, 10, 28), "Bailey", true, true));
-            calendarItems.Add(new CalendarItem(new DateTime(2025, 10, 29), "Bailey", true, true));
-            calendarItems.Add(new CalendarItem(new DateTime(2025, 10, 30), "Bailey", true, true));
-            calendarItems.Add(new CalendarItem(new DateTime(2025, 10, 31), "Bailey", true, true));
-
-            calendarItems.Add(new CalendarItem(new DateTime(2025, 10, 18), "Allen", false, true));
-
-            return calendarItems;
-        }
-        public List<CalendarItem> GetAllCalendarItems()
-        {
-            var calendarItems = new List<CalendarItem>();
-
-
-            return calendarItems;
-        }
-        //public List<Request> GetRequests()
-        //{
-        //    var requestItems = new List<Request>();
-        //    requestItems.Add(new Request(1, new DateTime(2025, 10, 28), "Bailey", true));
-        //    requestItems.Add(new Request(2, new DateTime(2025, 10, 29), "Bailey", true));
-        //    requestItems.Add(new Request(3, new DateTime(2025, 10, 30), "Bailey", true));
-        //    requestItems.Add(new Request(4, new DateTime(2025, 10, 31), "Bailey", true));
-        //    return requestItems;
-        //}
-        public List<CalendarItem> GetRequests()
-        {
-            var url = $"{config["ApiHost"]}CalendarItems";
-            var results = client.GetAsync(url).Result;
-            var calendarItems = new List<CalendarItem>();
-            if (results.IsSuccessStatusCode)
-            {
-                calendarItems = JsonConvert.DeserializeObject<List<CalendarItem>>(results.Content.ReadAsStringAsync().Result);
-            }
-
-
-            calendarItems.Add(new CalendarItem(new DateTime(2025, 10, 27), "Bailey", true));        //auto sets Approved to null
-            calendarItems.Add(new CalendarItem(new DateTime(2025, 10, 26), "Bailey", true));
-            calendarItems.Add(new CalendarItem(new DateTime(2025, 10, 25), "Bailey", true));
-
-            calendarItems.Add(new CalendarItem(new DateTime(2025, 10, 18), "Allen", false, true));
-
-            calendarItems.Add(new CalendarItem(new DateTime(2025, 10, 09), "Allen", false, false));
-
-            return calendarItems;
-        }
 
         //---------------------------DATABASE PORTION-------------------------------------------------------------
 
         private const string ConnectionString = "Host=localhost;Database=Lakehouse_Calendar;Username=postgres;Password=1234";
-        public static CalendarItem AddAndGetCalendarEvent(string name, bool? exclusive, bool? approved, DateTime date, int request_id)
+        public static CalendarItem AddAndGetCalendarEvent(string name, bool? exclusive, bool? approved, DateTime date, int request_id, string notes)
         {
             using (var connection = new NpgsqlConnection(ConnectionString))
             {
                 connection.Open();
 
                 string sql = @"
-                    INSERT INTO calendar (name, exclusive, approved, date, request_id)
-                    VALUES (@name, @exclusive, @approved, @date, @request_id)
-                    RETURNING id, name, exclusive, approved, date, request_id;
+                    INSERT INTO calendar (name, exclusive, approved, date, request_id, notes)
+                    VALUES (@name, @exclusive, @approved, @date, @request_id, @notes)
+                    RETURNING id, name, exclusive, approved, date, request_id, notes;
                 ";
 
                 using (var command = new NpgsqlCommand(sql, connection))
@@ -100,6 +42,7 @@ namespace LakeHouseCalendarWebsite.Services
                     command.Parameters.AddWithValue("@approved", (object?)approved ?? DBNull.Value);
                     command.Parameters.AddWithValue("@date", date);
                     command.Parameters.AddWithValue("@request_id", request_id);
+                    command.Parameters.AddWithValue("@notes", notes);
 
                     using (var reader = command.ExecuteReader())
                     {
@@ -112,7 +55,8 @@ namespace LakeHouseCalendarWebsite.Services
                                 Exclusive = reader.IsDBNull(2) ? (bool?)null : reader.GetBoolean(2),
                                 Approved = reader.IsDBNull(3) ? (bool?)null : reader.GetBoolean(3),
                                 Date = reader.GetDateTime(4),
-                                Request_id = reader.GetInt32(5)
+                                Request_id = reader.GetInt32(5),
+                                Notes = reader.GetString(6)
                             };
                         }
                     }
@@ -239,7 +183,7 @@ namespace LakeHouseCalendarWebsite.Services
                 connection.Open();
 
                 string sql = @"
-                    SELECT id, name, exclusive, approved, date
+                    SELECT id, name, exclusive, approved, date, notes
                     FROM calendar
                     WHERE date BETWEEN @dateFrom AND @dateTo;
                 ";
@@ -261,7 +205,10 @@ namespace LakeHouseCalendarWebsite.Services
                                 Approved = reader.IsDBNull(reader.GetOrdinal("approved"))
                                     ? null
                                     : reader.GetBoolean(reader.GetOrdinal("approved")),
-                                Date = reader.GetDateTime(reader.GetOrdinal("date"))
+                                Date = reader.GetDateTime(reader.GetOrdinal("date")),
+                                Notes = reader.IsDBNull(reader.GetOrdinal("notes"))
+                                    ? null
+                                    : reader.GetString(reader.GetOrdinal("notes"))
                             });
                         }
                     }
@@ -278,7 +225,7 @@ namespace LakeHouseCalendarWebsite.Services
             {
                 connection.Open();
 
-                string sql = "SELECT id, name, exclusive, approved, date FROM calendar;";
+                string sql = "SELECT id, name, exclusive, approved, date, notes FROM calendar;";
 
                 using (var command = new NpgsqlCommand(sql, connection))
                 using (var reader = command.ExecuteReader())
@@ -293,7 +240,11 @@ namespace LakeHouseCalendarWebsite.Services
                             Approved = reader.IsDBNull(reader.GetOrdinal("approved"))
                                 ? null
                                 : reader.GetBoolean(reader.GetOrdinal("approved")),
-                            Date = reader.GetDateTime(reader.GetOrdinal("date"))
+                            Date = reader.GetDateTime(reader.GetOrdinal("date")),
+                            Notes = reader.IsDBNull(reader.GetOrdinal("notes"))
+                                ? null
+                                : reader.GetString(reader.GetOrdinal("notes"))
+
                         });
                     }
                 }
@@ -329,7 +280,8 @@ namespace LakeHouseCalendarWebsite.Services
                     SET name = @name,
                     exclusive = @exclusive,
                     approved = @approved,
-                    date = @date
+                    date = @date,
+                    notes = @notes
                     WHERE id = @id;
                 ";
 
@@ -340,6 +292,7 @@ namespace LakeHouseCalendarWebsite.Services
                     command.Parameters.AddWithValue("@exclusive", (object?)updatedItem.Exclusive ?? DBNull.Value);
                     command.Parameters.AddWithValue("@approved", (object?)updatedItem.Approved ?? DBNull.Value);
                     command.Parameters.AddWithValue("@date", updatedItem.Date);
+                    command.Parameters.AddWithValue("@notes", (object?)updatedItem.Notes ?? DBNull.Value);
 
                     int rowsAffected = command.ExecuteNonQuery();
                     return rowsAffected > 0; // returns true if an existing row was updated

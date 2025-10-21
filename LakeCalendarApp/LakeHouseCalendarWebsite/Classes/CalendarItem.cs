@@ -10,6 +10,7 @@ namespace LakeHouseCalendarWebsite.Classes
         public bool? Exclusive { get; set; }
         public bool? Approved { get; set; }
         public int Request_id { get; set; }
+        public string Notes { get; set; }
         public CalendarItem()
         {
             Approved = false;

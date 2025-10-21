@@ -20,13 +20,15 @@ using (var connection = new Npgsql.NpgsqlConnection("Host=localhost;Database=Lak
             approved BOOL,
             date TIMESTAMP NOT NULL,
             request_id INT NOT NULL,
-            FOREIGN KEY (request_id) REFERENCES requests(id)
+            FOREIGN KEY (request_id) REFERENCES requests(id),
+            notes TEXT NULL
         );
 
         CREATE TABLE IF NOT EXISTS users (
             id SERIAL PRIMARY KEY,
             username TEXT NOT NULL,
-            password TEXT NOT NULL
+            password TEXT NOT NULL,
+            admin BOOL NOT NULL
         );
     ";
 

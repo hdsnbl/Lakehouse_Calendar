@@ -15,6 +15,7 @@
         <MudTextField @bind-Value="family"
                       T="string"
                       Label="Family Name"
+                      MaxLength="25"
                       Required="true"
                       RequiredError="Family name is required!"
                       Class="mb-4" />
@@ -31,6 +32,13 @@
                         T="bool"
                         Label="Exclusive"
                         Class="mb-4" />
+
+        <MudTextField @bind-Value="notes"
+                      T="string"
+                      Label="Notes"
+                      MaxLength="300"
+                      Required="false"
+                      Class="mb-4" />
 
         <MudButton Variant="Variant.Filled"
                     Color="Color.Primary"
@@ -52,6 +60,7 @@
     DateTime start = DateTime.Now;
     DateTime end = DateTime.Now;
     string family = "";
+    string notes = "";
     bool exclusive;
     bool? approved;
     bool duplicate;
@@ -129,6 +138,7 @@
             calendarItem.Exclusive = exclusive;
             calendarItem.Approved = null;
             calendarItem.Request_id = request.Id;
+            calendarItem.Notes = notes;
 
             calendar.Items.Add(calendarItem);
 
@@ -137,7 +147,8 @@
                 exclusive: exclusive,
                 approved: approved,
                 date: date,
-                request_id: request.Id
+                request_id: request.Id,
+                notes: notes
             );
             request.FullRequest.Add(calendarItem);
 
