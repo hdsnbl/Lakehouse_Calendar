@@ -1,56 +1,48 @@
 ﻿@page "/makeRequest"
 @inject ICalendar calendar;
 @inject NavigationManager NavigationManager;
-@inject IJSRuntime JSRuntime
+@inject IJSRuntime JSRuntime;
+@using MudBlazor;
+
 
 <PageTitle>MakeRequest</PageTitle>
 
 <h1>Make a Request</h1>
 
-<section style="
-    display: block;
-    width: 80%; /* width of the container box */
-    max-width: 500px; /* optional max width */
-    /*margin: 50px auto;  center horizontally on the page */
-    border: 2px solid #333; /* box border */
-    padding: 10px; /* space inside the box */
-    background-color: #f5f5f5; /* optional background */
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* optional shadow */
-    justify-items: center; /* center cells horizontally */
-    align-items: center; /* center cells vertically */
-    text-align: center; /* center text inside cells */
-">
-    
-    <b>Date Range:</b>
-    <div style="margin: 0 5px 10px 0;">
-        <label for="start">Start Date: </label> <input type="date" id="start" name="start" @bind="start"/>
-        <label for="end">End Date: </label> <input type="date" id="end" name="end" @bind="end"/>
-    </div>
-    <b>Family Name:</b>
-    <div style="margin: 0 5px 10px 0;">
-        <input type="text" id="family" name="family" placeholder="Enter your family name" @bind="family" />
-    </div>
-    <b>Is it Exclusive?</b>
-    <div style="margin: 0 5px 10px 0;">
-        <label for="exclusive">Exclusive: </label> <input type="checkbox" id=" exclusive" name="exclusive" @bind="exclusive" />
-    </div>
-    
+<MudForm @ref="form" @bind-IsValid="@success" @bind-Errors="@errors">
+    <MudDateRangePicker @bind-DateRange="_dateRange"
+                        Label="Select Date Range"
+                        Required="true"
+                        RequiredError="Date range is required!"
+                        Margin="Margin.Dense"
+                        PickerVariant="PickerVariant.Dialog"
+                        Class="mb-4" />
 
-    <button @onclick="makeRequest" style="background-color: lightgreen">Make Request</button>
+    <MudTextField @bind-Value="family"
+                  T="string"
+                  Label="Family Name"
+                  Required="true"
+                  RequiredError="Family name is required!"
+                  Class="mb-4" />
 
-    <div id="dateError" class="modal" style="@error">
-        <!-- Modal content -->
-        <div class="modal-content">
-            <h2 style="background-color:indianred">Error:</h2>
-            <h3>@errorText</h3>
-            <div>
-                <button class="button" id="cancel" @onclick="CloseErrorModal">&times;</button>                @* close the modal *@
-            </div>
-        </div>
-    </div>
-    
-    
-</section>
+    <MudCheckBox @bind-Checked="exclusive"
+                 T="bool"
+                 Label="Exclusive"
+                 Class="mb-4" />
+
+    <MudButton Variant="Variant.Filled"
+               Color="Color.Primary"
+               OnClick="makeRequest"
+               Disabled="@(!success)">
+        Register
+    </MudButton>
+</MudForm>
+
+<MudMessageBox @ref="_mudMessageBox" Title="Warning" CancelText="Cancel">
+    <MessageContent>
+        @errorText
+    </MessageContent>
+</MudMessageBox>
 
 @code {
     DateTime start = DateTime.Now;
@@ -60,24 +52,44 @@
     bool? approved;
     bool duplicate;
     bool claimed;
-    private string error = "display:none";
     private string errorText = "";
     Request request;
+    private MudBlazor.DateRange _dateRange = new(DateTime.Today, DateTime.Today);
+
+    bool success;
+    string[] errors = { };
+    MudTextField<string> pwField1;
+    MudForm form;
 
     protected override void OnInitialized()
     {
+        calendar.Items = ApiService.GetAllCalendarEvents();
+    }
 
+    private MudMessageBox _mudMessageBox;
+    private string _state = "Message box hasn't been opened yet";
+
+    private async Task OnButtonClickedAsync()
+    {
+        bool? result = await _mudMessageBox.ShowAsync();
+        _state = result is null ? "Canceled" : "Deleted!";
+        StateHasChanged();
     }
 
     private void CloseErrorModal()
     {
-        error = "display:none";
         errorText = "";
         StateHasChanged(); // refresh UI
     }
 
     private void makeRequest()
     {
+        if (_dateRange.Start == null || _dateRange.End == null)
+            return;
+
+        start = _dateRange.Start.Value;
+        end = _dateRange.End.Value;
+
         if (!ValidateRequest())
         {
             return;
@@ -115,7 +127,7 @@
             calendarItem.Request_id = request.Id;
 
             calendar.Items.Add(calendarItem);
-            
+
             calendarItem = ApiService.AddAndGetCalendarEvent(
                 name: family,
                 exclusive: exclusive,
@@ -125,7 +137,7 @@
             );
             request.FullRequest.Add(calendarItem);
 
-            
+
         }
 
         NavigationManager.NavigateTo("/Requests");
@@ -135,31 +147,18 @@
     private bool ValidateRequest()
     {
         bool valid = true;
-        error = "display:none";
         errorText = "";
-        if (end < start)
-        {
-            error = "display:block;white-space: pre-wrap;text-align: center";
-            errorText += "End date is before Start date\n\r";
-            valid = false;
-        }
-        if (family == "")
-        {
-            error = "display:block;white-space: pre-wrap;text-align: center";
-            errorText += "Enter a family name\n\r";
-            valid = false;
-        }
         if (duplicate == true)
         {
-            error = "display:block;white-space: pre-wrap;text-align: center";
             errorText += "This request has already been approved\n\r";
+            OnButtonClickedAsync();
             valid = false;
             duplicate = false;
         }
         if (claimed == true)
         {
-            error = "display:block;white-space: pre-wrap;text-align: center";
-            errorText += "This day has already been exclusively claimed\n\r";
+            errorText += "One of these days has already been exclusively claimed\n\r";
+            OnButtonClickedAsync();
             valid = false;
             claimed = false;
         }

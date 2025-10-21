@@ -24,6 +24,7 @@
 
     protected override void OnInitialized()
     {
+        calendar.Items = ApiService.GetAllCalendarEvents();
         CreateMonth();
     }
 

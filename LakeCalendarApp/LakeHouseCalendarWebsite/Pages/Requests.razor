@@ -6,11 +6,15 @@
 <PageTitle>Requests</PageTitle>
 
 <h1 style="text-align: center; font-weight: bold; text-decoration: underline;">Requests</h1>
-<MudButtonGroup Color="Color.Dark" Variant="Variant.Filled" Style="display:flex; justify-content: center; background-color: gray">
-    <MudButton @onclick="() => ChangeDisplay(null)">Pending</MudButton>
-    <MudButton @onclick="() => ChangeDisplay(true)">Approved</MudButton>
-    <MudButton @onclick="() => ChangeDisplay(false)">Disapproved</MudButton>
-</MudButtonGroup>
+<MudStack>
+    <MudToggleGroup T="bool?" SelectionMode="SelectionMode.SingleSelection" Value="@displaying" ValueChanged="ChangeDisplay"
+                    Color="Color.Primary" CheckMark="true" FixedContent="true" Dense="true" Rounded="true" Class="d-flex justify-center">
+        <MudToggleItem T="bool?" Value="@(null)" Text="Pending" />
+        <MudToggleItem T="bool?" Value="@(true)" Text="Approved" />
+        <MudToggleItem T="bool?" Value="@(false)" Text="Disapproved" />
+    </MudToggleGroup>
+</MudStack>
+
 
 <section>
     @if (realRequests.Count != 0)
@@ -36,7 +40,7 @@
                         border-radius: 8px;
                     ">
                     Family: @currentItem.Name <br>
-                    Approved: @(currentItem.Approved == true ? "Approved" : currentItem.Approved == false ? "Disapproved" : "Pending")
+                    @(currentItem.Approved == true ? "Approved" : currentItem.Approved == false ? "Disapproved" : "Pending")
                 </h2>
                 <MudPaper>
                     <MudList T="string">
@@ -84,22 +88,24 @@
     CalendarItem request = new CalendarItem();
     bool showApproveModal = false;
     bool showDisapproveModal = false;
-    //bool? displaying = null;
+    bool? displaying = null;
 
     protected override void OnInitialized()
     {
-        var events = ApiService.GetAllRequests();
-        realRequests = events;
-        // realRequests = events                                //Only shows the requests that haven't been approved or disapproved
-        //     .Where(item => item.Approved == null)
-        //     .ToList();
+        realRequests = ApiService.GetAllRequests()
+            .Where(item => item.Approved == displaying)
+            .ToList();
     }
 
-    void ChangeDisplay(bool? display)
+    void ChangeDisplay(bool? value)
     {
-        realRequests = ApiService.GetAllRequests()                                //Only shows the requests that haven't been approved or disapproved
-            .Where(item => item.Approved == display)
+        displaying = value;
+
+        realRequests = ApiService.GetAllRequests() 
+            .Where(item => item.Approved == displaying)
             .ToList();
+
+        StateHasChanged();
     }
 
     void Approve(Request request)
@@ -115,9 +121,11 @@
         request.Approved = true;
         ApiService.UpdateRequest(request);
 
-        // realRequests = ApiService.GetAllRequests()                                //Only shows the requests that haven't been approved or disapproved
-        //         .Where(item => item.Approved == null)
-        //         .ToList();
+        realRequests = ApiService.GetAllRequests()
+            .Where(item => item.Approved == displaying)
+            .ToList();
+
+        StateHasChanged();
     }
     void Disapprove(Request request)
     {
@@ -132,9 +140,11 @@
         request.Approved = false;
         ApiService.UpdateRequest(request);
 
-        // realRequests = ApiService.GetAllRequests()                                //Only shows the requests that haven't been approved or disapproved
-        //         .Where(item => item.Approved == null)
-        //         .ToList();
+        realRequests = ApiService.GetAllRequests()
+            .Where(item => item.Approved == displaying)
+            .ToList();
+
+        StateHasChanged();
     }
 
     void OpenApproveModal(CalendarItem item)
