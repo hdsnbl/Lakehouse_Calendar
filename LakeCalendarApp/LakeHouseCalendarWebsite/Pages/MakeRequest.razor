@@ -7,36 +7,40 @@
 
 <PageTitle>MakeRequest</PageTitle>
 
-<h1>Make a Request</h1>
 
-<MudForm @ref="form" @bind-IsValid="@success" @bind-Errors="@errors">
-    <MudDateRangePicker @bind-DateRange="_dateRange"
-                        Label="Select Date Range"
-                        Required="true"
-                        RequiredError="Date range is required!"
-                        Margin="Margin.Dense"
-                        PickerVariant="PickerVariant.Dialog"
+
+<MudPaper Width="50%" Class="p-4">
+    <h1>Make a Request:</h1>
+    <MudForm @ref="form" @bind-IsValid="@success" @bind-Errors="@errors">
+        <MudTextField @bind-Value="family"
+                      T="string"
+                      Label="Family Name"
+                      Required="true"
+                      RequiredError="Family name is required!"
+                      Class="mb-4" />
+        
+        <MudDateRangePicker @bind-DateRange="_dateRange"
+                            Label="Select Date Range"
+                            Required="true"
+                            RequiredError="Date range is required!"
+                            Margin="Margin.Dense"
+                            PickerVariant="PickerVariant.Dialog"
+                            Class="mb-4" />
+
+        <MudCheckBox @bind-Checked="exclusive"
+                        T="bool"
+                        Label="Exclusive"
                         Class="mb-4" />
 
-    <MudTextField @bind-Value="family"
-                  T="string"
-                  Label="Family Name"
-                  Required="true"
-                  RequiredError="Family name is required!"
-                  Class="mb-4" />
+        <MudButton Variant="Variant.Filled"
+                    Color="Color.Primary"
+                    OnClick="makeRequest"
+                    Disabled="@(!success)">
+            Register
+        </MudButton>
+    </MudForm>
+</MudPaper>
 
-    <MudCheckBox @bind-Checked="exclusive"
-                 T="bool"
-                 Label="Exclusive"
-                 Class="mb-4" />
-
-    <MudButton Variant="Variant.Filled"
-               Color="Color.Primary"
-               OnClick="makeRequest"
-               Disabled="@(!success)">
-        Register
-    </MudButton>
-</MudForm>
 
 <MudMessageBox @ref="_mudMessageBox" Title="Warning" CancelText="Cancel">
     <MessageContent>
