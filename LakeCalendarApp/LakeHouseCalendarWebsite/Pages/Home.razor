@@ -9,15 +9,89 @@
 
 <h1>Allen Lakehouse Calendar</h1>
 
+<MudMessageBox @ref="_mudMessageBox" Title="@GetModalTitle()" CancelText="Close">
+    <MessageContent>
+        @if (selectedItems?.Any() == true)
+        {
+            <MudPaper>
+                <MudList T="CalendarItem">
+                    @foreach (var item in selectedItems)
+                    {
+                        <MudListItem style="
+                                border: 1px solid #bbb;
+                                border-radius: 8px;
+                                padding: 10px;
+                                background-color: #fff;
+                                text-align: center;
+                            ">
+                            <p><strong>@item.Name</strong></p>
+                            @if (item.Notes != null)
+                            {
+                                <p><strong>Notes:</strong> @item.Notes</p>
+                            }
+                            else
+                            {
+                                <p>There are no notes here.</p>
+                            }
+                        </MudListItem>
+                    }
+                </MudList>
+            </MudPaper>
+        }
+        else
+        {
+            <p>No events for this day.</p>
+        }
+    </MessageContent>
+</MudMessageBox>
+
+<div style="display: flex; align-items: center; justify-content: space-between;">
+    <MudButton Variant="Variant.Filled" Size="Size.Medium" Color="Color.Dark" style="width: 14.5%" @onclick="() => { monthsAway--; CreateMonth(); }">Previous Month</MudButton>               @* need to change *@
+    <h2>@monthName, @year</h2>
+    <MudButton Variant="Variant.Filled" Size="Size.Medium" Color="Color.Dark" style="width: 14.5%" @onclick="() => { monthsAway++; CreateMonth(); }">Next Month</MudButton>
+</div>
+
+<section style="
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0;
+    width: 100%;
+">
+    @for (int i = 0; i < numDummyColumn; i++)
+    {
+        <div></div>
+    }
+
+    @for (int i = 1; i <= monthEnd.Day; i++)
+    {
+        var dayDate = new DateTime(year, month, i);
+        var dayItems = calendar.Items.Where(n => n.Date.Date == dayDate.Date).ToList();
+
+        var backgroundColor = dayItems.Any()
+        ? (dayItems.Any(n => n.Exclusive == true) ? "indianred" : "lightgreen")
+        : "lightyellow";
+
+        <div style="background-color: @backgroundColor;"
+             @onclick="() => OpenDayItems(dayDate)">
+            <h2>@i</h2>
+            @if (dayItems.Any())
+            {
+                <p>@string.Join(", ", dayItems.Select(n => n.Name))</p>
+            }
+        </div>
+    }
+</section>
+
 @code{
-    // private ApiService apiService = new ApiService();
     string monthName = "";
     DateTime monthEnd;
     int numDummyColumn = 0;
     int monthsAway = 0;
     int year = 2025;
     int month = 0;
-    string names = "";
+    private MudMessageBox _mudMessageBox;
+    private List<CalendarItem> selectedItems = new();
+    private DateTime? selectedDate;
 
     List<CalendarItem> monthlyItems = new List<CalendarItem>();
     List<Calendar> daysOfMonth = new List<Calendar>();
@@ -26,6 +100,24 @@
     {
         calendar.Items = ApiService.GetAllCalendarEvents();
         CreateMonth();
+    }
+
+    private string GetModalTitle()
+    {
+        return selectedDate.HasValue ? selectedDate.Value.ToString("MMMM dd, yyyy") : "No date selected";
+    }
+
+    private async Task OpenDayItems(DateTime date)
+    {
+        selectedDate = date;
+        selectedItems = calendar.Items
+            .Where(n => n.Date.Date == date.Date)
+            .ToList();
+
+        StateHasChanged();
+        await Task.Yield();
+
+        await _mudMessageBox.ShowAsync();
     }
 
     void CreateMonth()
@@ -78,81 +170,3 @@
         numDummyColumn = (int)monthStart.DayOfWeek;
     }
 }
-
-<div style="display: flex; align-items: center; justify-content: space-between;">
-    <MudButton Variant="Variant.Filled" Size="Size.Medium" Color="Color.Dark" style="width: 14.5%" @onclick="() => { monthsAway--; CreateMonth(); }">Previous Month</MudButton>               @* need to change *@
-    <h2>@monthName, @year</h2>
-    <MudButton Variant="Variant.Filled" Size="Size.Medium" Color="Color.Dark" style="width: 14.5%" @onclick="() => { monthsAway++; CreateMonth(); }">Next Month</MudButton>
-</div>
-
-<section style="
-    display: grid;
-    grid-template-columns: repeat(7, 1fr); /* 7 columns for a week */
-    gap: 0; /* removes space between cells */
-    width: 100%;
-">
-    @for (int i = 0; i < numDummyColumn; i++)
-    {
-        <div></div>
-    }
-    @for (int i = 1; i <= monthEnd.Day; i++)
-    {
-        var day = new Calendar();
-        CalendarItem? calendarItem = null;
-        List<CalendarItem>? calendarItemsOnDate = null;
-        @if (calendar.Items.Count != 0)
-        {
-            // Get all items that have the same date (same year/month/day)
-            calendarItemsOnDate = calendar.Items
-            .Where(n => n.Date.Date == new DateTime(year, month, i).Date)
-            .ToList();
-
-            if (calendarItemsOnDate.Any())
-            {
-                // Add all events to the day
-                foreach (var item in calendarItemsOnDate)
-                {
-                    //day.calendarItems.Add(item);
-                    day.Items.Add(item);
-                    monthlyItems.Add(item);
-                }
-
-                // Combine names like "Bob and George"
-                var combinedNames = string.Join(" and ", calendarItemsOnDate.Select(n => n.Name));
-
-                // Create a new CalendarItem representing the combined entry (for display)
-                calendarItem = new CalendarItem
-                {
-                    Name = combinedNames,
-                    Exclusive = calendarItemsOnDate.Any(n => n.Exclusive == true),
-                    Approved = calendarItemsOnDate.All(n => n.Approved == true),
-                    Date = new DateTime(year, month, i)
-                };
-            }
-            else
-            {
-                calendarItem = new CalendarItem();
-            }
-        }
-        @if (day.Items.Count == 0)
-        {
-            <div style="background-color: lightyellow;">
-                <h2>@i</h2>
-            </div>
-        }
-        else
-        {
-            daysOfMonth.Add(day);
-            <div style="@(calendarItem!.Exclusive == null ? "background-color: lightyellow;" : (calendarItem.Exclusive == true ? "background-color: indianred;" : "background-color: lightgreen;"))">
-                <h2>@i</h2>
-                @if (calendarItem != null)
-                {
-                    <p>@calendarItem.Name</p>
-                }
-            </div>
-        }
-        
-    }
-
-</section>
-

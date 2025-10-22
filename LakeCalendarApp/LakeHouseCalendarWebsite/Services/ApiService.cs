@@ -126,7 +126,7 @@ namespace LakeHouseCalendarWebsite.Services
                 // Get calendar items for each request
                 foreach (var req in requests)
                 {
-                    string calendarSql = "SELECT id, name, exclusive, approved, date, request_id FROM calendar WHERE request_id = @request_id";
+                    string calendarSql = "SELECT id, name, exclusive, approved, date, request_id, notes FROM calendar WHERE request_id = @request_id";
                     using (var calCmd = new NpgsqlCommand(calendarSql, connection))
                     {
                         calCmd.Parameters.AddWithValue("@request_id", req.Id);
@@ -141,7 +141,8 @@ namespace LakeHouseCalendarWebsite.Services
                                     Exclusive = calReader.IsDBNull(2) ? (bool?)null : calReader.GetBoolean(2),
                                     Approved = calReader.IsDBNull(3) ? (bool?)null : calReader.GetBoolean(3),
                                     Date = calReader.GetDateTime(4),
-                                    Request_id = calReader.GetInt32(5)
+                                    Request_id = calReader.GetInt32(5),
+                                    Notes = calReader.IsDBNull(6) ? (string?)null : calReader.GetString(6)
                                 });
                             }
                         }
