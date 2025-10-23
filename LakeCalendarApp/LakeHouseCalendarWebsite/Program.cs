@@ -28,7 +28,8 @@ using (var connection = new Npgsql.NpgsqlConnection("Host=localhost;Database=Lak
             id SERIAL PRIMARY KEY,
             username TEXT NOT NULL,
             password TEXT NOT NULL,
-            admin BOOL NOT NULL
+            admin BOOL NOT NULL,
+            email TEXT NULL
         );
     ";
 
@@ -52,6 +53,7 @@ builder.Services.AddServerSideBlazor();
 //builder.Services.AddSingleton<CalendarItem>();
 builder.Services.AddScoped<ICalendar, Calendar>();
 builder.Services.AddScoped<ApiService, ApiService>();
+//builder.Services.AddScoped<IUser, User>();
 
 builder.Services.AddHttpClient();
 

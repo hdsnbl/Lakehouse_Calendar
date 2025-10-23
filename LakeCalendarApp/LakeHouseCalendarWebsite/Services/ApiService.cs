@@ -2,6 +2,7 @@
 
 using Newtonsoft.Json;
 using Npgsql;
+using System.Xml.Linq;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace LakeHouseCalendarWebsite.Services
@@ -297,6 +298,29 @@ namespace LakeHouseCalendarWebsite.Services
 
                     int rowsAffected = command.ExecuteNonQuery();
                     return rowsAffected > 0; // returns true if an existing row was updated
+                }
+            }
+        }
+        public static void CreateUser(string username, string password, bool admin, string email)
+        {
+            using (var connection = new NpgsqlConnection(ConnectionString))
+            {
+                connection.Open();
+
+                string sql = @"
+                    INSERT INTO users (username, password, admin, email)
+                    VALUES (@username, @password, @admin, @email);
+                ";
+
+                using (var command = new NpgsqlCommand(sql, connection))
+                {
+                    command.Parameters.AddWithValue("@username", username);
+                    command.Parameters.AddWithValue("@password", password);
+                    command.Parameters.AddWithValue("@admin", admin);
+                    command.Parameters.AddWithValue("@email", (object?)email ?? DBNull.Value);
+
+                    command.ExecuteReader();
+                    
                 }
             }
         }

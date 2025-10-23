@@ -7,8 +7,6 @@
 
 <PageTitle>MakeRequest</PageTitle>
 
-
-
 <MudPaper Width="50%" Class="p-4">
     <h1>Make a Request:</h1>
     <MudForm @ref="form" @bind-IsValid="@success" @bind-Errors="@errors">
@@ -52,7 +50,6 @@
         </MudButton>
     </MudForm>
 </MudPaper>
-
 
 <MudMessageBox @ref="_mudMessageBox" Title="Warning" CancelText="Cancel">
     <MessageContent>

@@ -7,7 +7,13 @@
 
 <PageTitle>Calendar</PageTitle>
 
-<h1>Allen Lakehouse Calendar</h1>
+<div style="display: flex; align-items: center; justify-content: space-between;">
+    <h1 style=" margin: 0 auto; text-align: center; flex: 1;">Allen Lakehouse Calendar</h1>
+    <MudButton Color="Color.Dark" Variant="Variant.Filled" @onclick="() => CreateUser()">
+        Create User
+    </MudButton>
+</div>
+
 
 <MudMessageBox @ref="_mudMessageBox" Title="@GetModalTitle()" CancelText="Close">
     <MessageContent>
@@ -138,6 +144,12 @@
     {
         calendar.Items = ApiService.GetAllCalendarEvents();
         CreateMonth();
+    }
+
+    void CreateUser()
+    {
+        //ApiService.CreateUser("test", "testing", true, null);
+        NavigationManager.NavigateTo("/createUser");
     }
 
     private async Task ConfirmDisapprove(CalendarItem item)
