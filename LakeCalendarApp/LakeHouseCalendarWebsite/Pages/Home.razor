@@ -60,36 +60,96 @@
     <MudButton Variant="Variant.Filled" Size="Size.Medium" Color="Color.Dark" style="width: 14.5%" @onclick="() => { monthsAway++; CreateMonth(); }">Next Month</MudButton>
 </div>
 
-<section style="
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 0;
-    width: 100%;
-">
-    @for (int i = 0; i < numDummyColumn; i++)
-    {
-        <div></div>
+<MudPaper Elevation="11" style="background-color: lightyellow; padding: 20px;">
+    <section style="
+                display: grid;
+                grid-template-columns: repeat(7, 1fr);
+                gap: 0;
+                width: 100%;
+            ">
+        @for (int i = 0; i < numDummyColumn; i++)
+        {
+            <div class="clickable-box"></div>
+        }
+
+        @for (int i = 1; i <= monthEnd.Day; i++)
+        {
+            var dayDate = new DateTime(year, month, i);
+            var dayItems = calendar.Items.Where(n => n.Date.Date == dayDate.Date).ToList();
+
+            var backgroundColor = dayItems.Any()
+            ? (dayItems.Any(n => n.Exclusive == true) ? "indianred" : "lightgreen")
+            : "lightyellow";
+
+            <div class="clickable-box" style="background-color: @backgroundColor;"
+                 @onclick="() => OpenDayItems(dayDate)">
+                <h2>@i</h2>
+                @if (dayItems.Any())
+                {
+                    <p>@string.Join(", ", dayItems.Select(n => n.Name))</p>
+                }
+            </div>
+        }
+    </section>
+</MudPaper>
+
+<style>
+    .clickable-box {
+        transition: all 0.2s ease-in-out;
+        cursor: pointer;
     }
 
-    @for (int i = 1; i <= monthEnd.Day; i++)
-    {
-        var dayDate = new DateTime(year, month, i);
-        var dayItems = calendar.Items.Where(n => n.Date.Date == dayDate.Date).ToList();
+    .clickable-box:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        background-color: #f0f0f0;
+    }
 
-        var backgroundColor = dayItems.Any()
-        ? (dayItems.Any(n => n.Exclusive == true) ? "indianred" : "lightgreen")
-        : "lightyellow";
+    .clickable-box:active {
+        transform: translateY(0);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+</style>
 
-        <div style="background-color: @backgroundColor;"
-             @onclick="() => OpenDayItems(dayDate)">
-            <h2>@i</h2>
-            @if (dayItems.Any())
+
+@* <MudPaper>
+    <MudContainer>
+        <MudGrid>
+            
+            @for (int i = 0; i < numDummyColumn; i++)
             {
-                <p>@string.Join(", ", dayItems.Select(n => n.Name))</p>
+                <div></div>
             }
-        </div>
-    }
-</section>
+
+            @for (int i = 1; i <= monthEnd.Day; i++)
+            {
+                var dayDate = new DateTime(year, month, i);
+                var dayItems = calendar.Items.Where(n => n.Date.Date == dayDate.Date).ToList();
+
+                var backgroundColor = dayItems.Any()
+                ? (dayItems.Any(n => n.Exclusive == true) ? "indianred" : "lightgreen")
+                : "lightyellow";
+
+                <div style="background-color: @backgroundColor;"
+                     @onclick="() => OpenDayItems(dayDate)">
+                    <h2>@i</h2>
+                    @if (dayItems.Any())
+                    {
+                        <p>@string.Join(", ", dayItems.Select(n => n.Name))</p>
+                    }
+                </div>
+                <MudItem xs="2" @onclick="() => OpenDayItems(dayDate)">
+                    <h2>@i</h2>
+                    @if (dayItems.Any())
+                    {
+                        <p>@string.Join(", ", dayItems.Select(n => n.Name))</p>
+                    }
+                </MudItem>
+            }
+        </MudGrid>
+        
+    </MudContainer>
+</MudPaper> *@
 
 @code{
     string monthName = "";
