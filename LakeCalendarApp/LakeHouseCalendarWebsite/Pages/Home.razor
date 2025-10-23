@@ -23,8 +23,18 @@
                                 padding: 10px;
                                 background-color: #fff;
                                 text-align: center;
+                                align-content: right;
                             ">
-                            <p><strong>@item.Name</strong></p>
+                            <div style="display: flex; align-items: center; justify-content: space-between;">
+                                <p style=" margin: 0 auto; text-align: center; flex: 1;">
+                                    <strong>@item.Name</strong>
+                                </p>
+                                <MudButton Variant="Variant.Filled" Color="Color.Secondary"
+                                           @onclick="() => ConfirmDisapprove(item)">
+                                    <MudIcon Icon="@Icons.Material.Filled.Delete" />
+                                </MudButton>
+                            </div>
+                            
                             @if (item.Notes != null)
                             {
                                 <p><strong>Notes:</strong> @item.Notes</p>
@@ -33,10 +43,6 @@
                             {
                                 <p>There are no notes here.</p>
                             }
-                            <MudButton Variant="Variant.Filled" Color="Color.Secondary"
-                                       @onclick="() => ConfirmDisapprove(item)">
-                                Disapprove
-                            </MudButton>
                         </MudListItem>
                     }
                 </MudList>
@@ -111,45 +117,6 @@
     }
 </style>
 
-
-@* <MudPaper>
-    <MudContainer>
-        <MudGrid>
-            
-            @for (int i = 0; i < numDummyColumn; i++)
-            {
-                <div></div>
-            }
-
-            @for (int i = 1; i <= monthEnd.Day; i++)
-            {
-                var dayDate = new DateTime(year, month, i);
-                var dayItems = calendar.Items.Where(n => n.Date.Date == dayDate.Date).ToList();
-
-                var backgroundColor = dayItems.Any()
-                ? (dayItems.Any(n => n.Exclusive == true) ? "indianred" : "lightgreen")
-                : "lightyellow";
-
-                <div style="background-color: @backgroundColor;"
-                     @onclick="() => OpenDayItems(dayDate)">
-                    <h2>@i</h2>
-                    @if (dayItems.Any())
-                    {
-                        <p>@string.Join(", ", dayItems.Select(n => n.Name))</p>
-                    }
-                </div>
-                <MudItem xs="2" @onclick="() => OpenDayItems(dayDate)">
-                    <h2>@i</h2>
-                    @if (dayItems.Any())
-                    {
-                        <p>@string.Join(", ", dayItems.Select(n => n.Name))</p>
-                    }
-                </MudItem>
-            }
-        </MudGrid>
-        
-    </MudContainer>
-</MudPaper> *@
 
 @code{
     string monthName = "";
@@ -247,11 +214,6 @@
 
         foreach (var apiitem in apiItems)
         {
-            // var item = calendar.Items.FirstOrDefault(n => n.Date == apiitem.Date);          
-            // if (item == null)
-            // {
-            //     calendar.Items.Add(apiitem);
-            // }
             bool exists = calendar.Items.Any(n => n.Date == apiitem.Date && n.Name == apiitem.Name);
             if (!exists)
             {

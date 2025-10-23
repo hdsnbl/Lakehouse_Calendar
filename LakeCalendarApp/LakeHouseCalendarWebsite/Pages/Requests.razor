@@ -46,13 +46,12 @@
                         {
                             <MudListItem>
                                 <div style="
-                                                border: 1px solid #bbb;
-                                                border-radius: 8px;
-                                                padding: 10px;
-                                                background-color: #fff;
-                                                text-align: center;
-                                                /* Make an onclick() function to add a modal that displays the information of the date when clicked */
-                                            ">
+                                        border: 1px solid #bbb;
+                                        border-radius: 8px;
+                                        padding: 10px;
+                                        background-color: #fff;
+                                        text-align: center;
+                                    ">
                                     <p><strong>Date:</strong> @item.Date.ToString("MMM dd, yyyy"), <strong>Exclusive:</strong> @(item.Exclusive == true ? "Yes" : "No")</p>
                                     <p>@(item.Approved == true ? "Approved" : item.Approved == false ? "Disapproved" : "Pending")</p>
                                 </div>
