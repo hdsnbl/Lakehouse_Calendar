@@ -1,8 +1,9 @@
 ﻿@page "/createUser"
 @inject ApiService apiService;
 @inject NavigationManager NavigationManager;
-@using System.Text.RegularExpressions
-@using System.ComponentModel.DataAnnotations
+@using System.Text.RegularExpressions;
+@using System.ComponentModel.DataAnnotations;
+@inject IDialogService DialogService;
 
 <h3 style="text-align: center">Create a User</h3>
 
@@ -65,16 +66,17 @@
 
     }
 
-    void MakeUser()
+    async Task MakeUser()
     {
-        var user = new User();
-
-        user.Username = username;
-        user.Password = password;
-        user.Admin = admin;
-        user.Email = email;
-
         ApiService.CreateUser(username, password, admin, email);
+
+        bool? result = await DialogService.ShowMessageBox(
+            "Success!",
+            "User has been created.",
+            yesText: "OK");
+        StateHasChanged();
+
+        NavigationManager.NavigateTo("/");
     }
     private IEnumerable<string> PasswordStrength(string pw)
     {
