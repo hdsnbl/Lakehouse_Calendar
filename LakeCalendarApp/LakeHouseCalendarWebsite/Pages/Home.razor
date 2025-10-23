@@ -33,6 +33,10 @@
                             {
                                 <p>There are no notes here.</p>
                             }
+                            <MudButton Variant="Variant.Filled" Color="Color.Secondary"
+                                       @onclick="() => ConfirmDisapprove(item)">
+                                Disapprove
+                            </MudButton>
                         </MudListItem>
                     }
                 </MudList>
@@ -42,6 +46,11 @@
         {
             <p>No events for this day.</p>
         }
+    </MessageContent>
+</MudMessageBox>
+<MudMessageBox @ref="_confirmBox" Title="Confirm Disapproval" YesText="Yes" NoText="Cancel">
+    <MessageContent>
+        <p>Are you sure you want to disapprove <strong>@(itemToDisapprove?.Name)</strong>?</p>
     </MessageContent>
 </MudMessageBox>
 
@@ -92,6 +101,8 @@
     private MudMessageBox _mudMessageBox;
     private List<CalendarItem> selectedItems = new();
     private DateTime? selectedDate;
+    private MudMessageBox _confirmBox;
+    private CalendarItem? itemToDisapprove;
 
     List<CalendarItem> monthlyItems = new List<CalendarItem>();
     List<Calendar> daysOfMonth = new List<Calendar>();
@@ -100,6 +111,30 @@
     {
         calendar.Items = ApiService.GetAllCalendarEvents();
         CreateMonth();
+    }
+
+    private async Task ConfirmDisapprove(CalendarItem item)
+    {
+        itemToDisapprove = item;
+        bool? confirmed = await _confirmBox.ShowAsync();
+        if (confirmed == true)
+        {
+            await DisapproveItem(item);
+        }
+    }
+
+    private async Task DisapproveItem(CalendarItem item)
+    {
+        // Example: mark as not approved and update DB
+        item.Approved = false;
+        ApiService.UpdateCalendarEvent(item);
+
+        // Refresh items for the modal view
+        selectedItems = calendar.Items
+            .Where(n => n.Date.Date == selectedDate?.Date)
+            .ToList();
+
+        StateHasChanged();
     }
 
     private string GetModalTitle()

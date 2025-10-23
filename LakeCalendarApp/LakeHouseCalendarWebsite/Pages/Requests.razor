@@ -54,6 +54,7 @@
                                                 /* Make an onclick() function to add a modal that displays the information of the date when clicked */
                                             ">
                                     <p><strong>Date:</strong> @item.Date.ToString("MMM dd, yyyy"), <strong>Exclusive:</strong> @(item.Exclusive == true ? "Yes" : "No")</p>
+                                    <p>@(item.Approved == true ? "Approved" : item.Approved == false ? "Disapproved" : "Pending")</p>
                                 </div>
                             </MudListItem>
                         }
@@ -118,6 +119,9 @@
     {
         realRequests = ApiService.GetAllRequests()
             .Where(item => item.Approved == displaying)
+            .OrderBy(r => r.FullRequest != null && r.FullRequest.Any()
+                ? r.FullRequest.Min(f => f.Date)
+                : DateTime.MaxValue)
             .ToList();
     }
 
@@ -140,6 +144,9 @@
 
         realRequests = ApiService.GetAllRequests() 
             .Where(item => item.Approved == displaying)
+            .OrderBy(r => r.FullRequest != null && r.FullRequest.Any()
+                ? r.FullRequest.Min(f => f.Date)
+                : DateTime.MaxValue)
             .ToList();
 
         StateHasChanged();
