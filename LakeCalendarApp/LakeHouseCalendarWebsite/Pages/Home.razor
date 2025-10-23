@@ -156,15 +156,22 @@
     {
         itemToDisapprove = item;
         bool? confirmed = await _confirmBox.ShowAsync();
+
         if (confirmed == true)
         {
             await DisapproveItem(item);
+            //await _mudMessageBox.CloseAsync();
         }
+        calendar.Items = ApiService.GetAllCalendarEvents()
+            .Where(item => item.Approved == true)
+            .ToList();
+
+        //StateHasChanged();
+        NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
     }
 
     private async Task DisapproveItem(CalendarItem item)
     {
-        // Example: mark as not approved and update DB
         item.Approved = false;
         ApiService.UpdateCalendarEvent(item);
 
@@ -173,7 +180,8 @@
             .Where(n => n.Date.Date == selectedDate?.Date)
             .ToList();
 
-        StateHasChanged();
+        
+        
     }
 
     private string GetModalTitle()
