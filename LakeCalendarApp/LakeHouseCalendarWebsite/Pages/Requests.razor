@@ -149,6 +149,26 @@
                 : DateTime.MaxValue)
             .ToList();
 
+        foreach (var request in realRequests)                       //Since users can change the individual calendarItems to be disapproved in the calendar tab, this checks if all of the items in a request has already been disapproved, and then changes the request itself to be disapproved as well.
+        {
+            foreach (var item in request.FullRequest)
+            {
+                if (item.Approved != false)
+                {
+                    StateHasChanged();
+                    return;
+                }
+            }
+            request.Approved = false;
+            ApiService.UpdateRequest(request);
+            realRequests = ApiService.GetAllRequests()
+            .Where(item => item.Approved == displaying)
+            .OrderBy(r => r.FullRequest != null && r.FullRequest.Any()
+                ? r.FullRequest.Min(f => f.Date)
+                : DateTime.MaxValue)
+            .ToList();
+        }
+
         StateHasChanged();
     }
 
